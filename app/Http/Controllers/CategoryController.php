@@ -11,15 +11,43 @@ class CategoryController extends Controller
     /**
      * Display a listing of categories.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::active()
-            ->main()
-            ->withCount('products')
+        $categories = Category::where('is_active', true)
+            ->where('parent_id', null)
             ->orderBy('sort_order')
             ->get();
 
-        return view('categories.index', compact('categories'));
+        // Build products query with filters
+        $productsQuery = Product::where('is_active', true)
+            ->with(['category']);
+
+        // Apply filters
+        if ($request->filled('category_id')) {
+            $productsQuery->where('category_id', $request->category_id);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $productsQuery->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('name_ar', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('description_ar', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('min_price')) {
+            $productsQuery->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $productsQuery->where('price', '<=', $request->max_price);
+        }
+
+        $products = $productsQuery->orderBy('created_at', 'desc')->paginate(20);
+
+        return view('categories.index', compact('categories', 'products'));
     }
 
     /**

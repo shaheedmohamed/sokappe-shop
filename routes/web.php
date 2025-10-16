@@ -46,6 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/vendor/profile', [VendorController::class, 'updateProfile'])->name('vendor.update-profile');
 });
 
+// Vendor routes (public)
+Route::get('/vendors', [VendorController::class, 'index'])->name('vendors.index');
+Route::get('/vendors/{vendor}', [VendorController::class, 'show'])->name('vendors.show');
+
 // Additional routes for future implementation
 Route::get('/offers', function () {
     return view('offers.index');

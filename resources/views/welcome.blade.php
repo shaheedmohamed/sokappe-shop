@@ -499,6 +499,244 @@
             padding: 12px 25px;
         }
         
+        /* Interactive Product Slider */
+        .product-slider-container {
+            position: relative;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        
+        .product-slider {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 20px;
+        }
+        
+        .slider-item {
+            min-width: 250px;
+            flex-shrink: 0;
+        }
+        
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(102, 126, 234, 0.9);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .slider-btn:hover {
+            background: #667eea;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .slider-btn.prev {
+            right: 10px;
+        }
+        
+        .slider-btn.next {
+            left: 10px;
+        }
+        
+        /* Category Tabs */
+        .category-tabs {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            color: #666;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active,
+        .tab-btn:hover {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+        }
+        
+        .category-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .category-item:hover {
+            background: white;
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .category-item i {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .category-item h6 {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .category-item span {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Live Statistics */
+        .live-stats {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 50px 30px;
+            color: white;
+        }
+        
+        .stat-counter {
+            padding: 20px;
+        }
+        
+        .stat-counter i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .counter {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .stat-counter p {
+            font-size: 1.1rem;
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        /* User Dropdown Styles */
+        .user-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px !important;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .user-dropdown:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .user-dropdown-menu {
+            min-width: 280px;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 0;
+            margin-top: 10px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .user-avatar-large {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .user-details strong {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+        
+        .user-details small {
+            font-size: 0.85rem;
+        }
+        
+        .dropdown-item {
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: #f8f9fa;
+            padding-right: 25px;
+        }
+        
+        .dropdown-item i {
+            width: 20px;
+            text-align: center;
+        }
+        
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
@@ -553,19 +791,60 @@
                 <ul class="navbar-nav">
                     @auth
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user"></i> {{ Auth::user()->name }}
+                            <a class="nav-link dropdown-toggle user-dropdown" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <span class="user-name">{{ Auth::user()->name }}</span>
+                                <i class="fas fa-chevron-down ms-1"></i>
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu user-dropdown-menu">
+                                <li class="dropdown-header">
+                                    <div class="user-info">
+                                        <div class="user-avatar-large">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="user-details">
+                                            <strong>{{ Auth::user()->name }}</strong>
+                                            <small class="text-muted">{{ Auth::user()->email }}</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
                                 @if(Auth::user()->isVendor())
-                                    <li><a class="dropdown-item" href="{{ route('vendor.profile') }}">ملف المتجر</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('vendor.profile') }}">
+                                            <i class="fas fa-store me-2"></i>ملف المتجر
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('vendor.edit-profile') }}">
+                                            <i class="fas fa-edit me-2"></i>تعديل البيانات
+                                        </a>
+                                    </li>
                                 @endif
-                                <li><a class="dropdown-item" href="{{ route('products.favorites') }}">المفضلة</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('products.favorites') }}">
+                                        <i class="fas fa-heart me-2"></i>المفضلة
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-shopping-bag me-2"></i>طلباتي
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cog me-2"></i>الإعدادات
+                                    </a>
+                                </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                                    <form method="POST" action="{{ route('logout') }}" class="d-inline w-100">
                                         @csrf
-                                        <button type="submit" class="dropdown-item">تسجيل الخروج</button>
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج
+                                        </button>
                                     </form>
                                 </li>
                             </ul>
@@ -616,7 +895,7 @@
         <div class="row g-4">
             @foreach($categories as $category)
             <div class="col-lg-3 col-md-6">
-                <a href="{{ route('category.show', $category->slug) }}" class="text-decoration-none">
+                <a href="{{ route('categories.index', ['category_id' => $category->id]) }}" class="text-decoration-none">
                     <div class="category-card">
                         <div class="category-icon">
                             <i class="{{ $category->icon }}"></i>
@@ -914,6 +1193,220 @@
         </div>
     </section>
 
+    <!-- Interactive Product Slider -->
+    <section class="container mb-5">
+        <h2 class="section-title">منتجات مختارة لك</h2>
+        <div class="product-slider-container">
+            <div class="product-slider" id="productSlider">
+                @for($i = 1; $i <= 20; $i++)
+                <div class="slider-item">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-{{ $i <= 5 ? 'mobile-alt' : ($i <= 10 ? 'laptop' : ($i <= 15 ? 'car' : 'home')) }}"></i>
+                        </div>
+                        <div class="product-info">
+                            <h5 class="product-title">منتج رقم {{ $i }}</h5>
+                            <div class="product-price">{{ rand(100, 5000) }} جنيه</div>
+                            <button class="btn btn-add-cart btn-sm" onclick="addToCart({{ $i }})">
+                                <i class="fas fa-cart-plus"></i> أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @endfor
+            </div>
+            <button class="slider-btn prev" onclick="slideProducts('prev')">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="slider-btn next" onclick="slideProducts('next')">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Interactive Categories Tabs -->
+    <section class="container mb-5">
+        <h2 class="section-title">استكشف الفئات</h2>
+        <div class="category-tabs">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showCategoryTab('electronics')">الإلكترونيات</button>
+                <button class="tab-btn" onclick="showCategoryTab('services')">الخدمات</button>
+                <button class="tab-btn" onclick="showCategoryTab('vehicles')">المركبات</button>
+                <button class="tab-btn" onclick="showCategoryTab('real-estate')">العقارات</button>
+            </div>
+            
+            <div class="tab-content">
+                <div class="tab-pane active" id="electronics">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('electronics')">
+                                <i class="fas fa-mobile-alt"></i>
+                                <h6>هواتف ذكية</h6>
+                                <span>{{ rand(50, 200) }} منتج</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('electronics')">
+                                <i class="fas fa-laptop"></i>
+                                <h6>أجهزة كمبيوتر</h6>
+                                <span>{{ rand(30, 150) }} منتج</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('electronics')">
+                                <i class="fas fa-tv"></i>
+                                <h6>أجهزة منزلية</h6>
+                                <span>{{ rand(40, 180) }} منتج</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('electronics')">
+                                <i class="fas fa-camera"></i>
+                                <h6>كاميرات</h6>
+                                <span>{{ rand(20, 100) }} منتج</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane" id="services">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('services')">
+                                <i class="fas fa-graduation-cap"></i>
+                                <h6>تدريس وتدريب</h6>
+                                <span>{{ rand(25, 120) }} خدمة</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('services')">
+                                <i class="fas fa-wrench"></i>
+                                <h6>صيانة وإصلاح</h6>
+                                <span>{{ rand(35, 140) }} خدمة</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('services')">
+                                <i class="fas fa-paint-brush"></i>
+                                <h6>تصميم وإبداع</h6>
+                                <span>{{ rand(15, 80) }} خدمة</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('services')">
+                                <i class="fas fa-cut"></i>
+                                <h6>تجميل وعناية</h6>
+                                <span>{{ rand(20, 90) }} خدمة</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane" id="vehicles">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('vehicles')">
+                                <i class="fas fa-car"></i>
+                                <h6>سيارات</h6>
+                                <span>{{ rand(100, 300) }} سيارة</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('vehicles')">
+                                <i class="fas fa-motorcycle"></i>
+                                <h6>دراجات نارية</h6>
+                                <span>{{ rand(30, 120) }} دراجة</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('vehicles')">
+                                <i class="fas fa-truck"></i>
+                                <h6>شاحنات</h6>
+                                <span>{{ rand(20, 80) }} شاحنة</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('vehicles')">
+                                <i class="fas fa-bicycle"></i>
+                                <h6>دراجات هوائية</h6>
+                                <span>{{ rand(15, 60) }} دراجة</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane" id="real-estate">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('real-estate')">
+                                <i class="fas fa-home"></i>
+                                <h6>شقق للبيع</h6>
+                                <span>{{ rand(200, 500) }} شقة</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('real-estate')">
+                                <i class="fas fa-building"></i>
+                                <h6>شقق للإيجار</h6>
+                                <span>{{ rand(150, 400) }} شقة</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('real-estate')">
+                                <i class="fas fa-store"></i>
+                                <h6>محلات تجارية</h6>
+                                <span>{{ rand(50, 200) }} محل</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="category-item" onclick="goToCategory('real-estate')">
+                                <i class="fas fa-warehouse"></i>
+                                <h6>مخازن ومكاتب</h6>
+                                <span>{{ rand(30, 150) }} مكان</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Statistics Counter -->
+    <section class="container mb-5">
+        <div class="live-stats">
+            <div class="row text-center">
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-counter">
+                        <i class="fas fa-users"></i>
+                        <div class="counter" data-target="{{ $stats['total_users'] }}">0</div>
+                        <p>مستخدم نشط</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-counter">
+                        <i class="fas fa-box"></i>
+                        <div class="counter" data-target="{{ $stats['total_products'] }}">0</div>
+                        <p>منتج متاح</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-counter">
+                        <i class="fas fa-store"></i>
+                        <div class="counter" data-target="150">0</div>
+                        <p>متجر موثق</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-counter">
+                        <i class="fas fa-handshake"></i>
+                        <div class="counter" data-target="5000">0</div>
+                        <p>صفقة ناجحة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Newsletter -->
     <section class="container mb-5">
         <div class="newsletter-section">
@@ -1022,6 +1515,116 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let currentSlide = 0;
+        const slideWidth = 270; // 250px + 20px gap
+        
+        // Product Slider Functions
+        function slideProducts(direction) {
+            const slider = document.getElementById('productSlider');
+            const maxSlides = 20 - 4; // Show 4 items at once
+            
+            if (direction === 'next' && currentSlide < maxSlides) {
+                currentSlide++;
+            } else if (direction === 'prev' && currentSlide > 0) {
+                currentSlide--;
+            }
+            
+            slider.style.transform = `translateX(${currentSlide * slideWidth}px)`;
+        }
+        
+        // Category Tabs Functions
+        function showCategoryTab(tabId) {
+            // Hide all tab panes
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        
+        function goToCategory(category) {
+            window.location.href = '/categories';
+        }
+        
+        // Counter Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 20);
+            });
+        }
+        
+        // Intersection Observer for Counter Animation
+        const observerOptions = {
+            threshold: 0.5
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observe the stats section
+            const statsSection = document.querySelector('.live-stats');
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+            
+            // Auto-slide products every 5 seconds
+            setInterval(() => {
+                slideProducts('next');
+                if (currentSlide >= 16) { // Reset to beginning
+                    currentSlide = -1;
+                }
+            }, 5000);
+        });
+        
+        // Add to cart function (placeholder)
+        function addToCart(productId) {
+            console.log('Added product', productId, 'to cart');
+            
+            // Show success message
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> تم الإضافة';
+            button.style.background = '#28a745';
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.background = '';
+            }, 2000);
+        }
+    </script>
     
     <!-- Custom JS -->
     <script>

@@ -12,149 +12,41 @@ class VendorController extends Controller
     /**
      * Display a listing of vendors.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $vendorsQuery = User::where('user_type', 'vendor')
+        $vendors = User::where('user_type', 'vendor')
             ->where('registration_completed', true)
-            ->where('store_verified', true)
-            ->withCount('products');
+            ->paginate(12);
 
-        // Apply filters
-        $sortBy = $request->get('sort', 'rating');
-        $search = $request->get('search');
-        $city = $request->get('city');
-
-        if ($search) {
-            $vendorsQuery->where(function ($q) use ($search) {
-                $q->where('store_name', 'like', "%{$search}%")
-                  ->orWhere('store_name_ar', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('description_ar', 'like', "%{$search}%");
-            });
-        }
-
-        if ($city) {
-            $vendorsQuery->where('city', $city);
-        }
-
-        // Apply sorting
-        switch ($sortBy) {
-            case 'name':
-                $vendorsQuery->orderBy('store_name', 'asc');
-                break;
-            case 'products':
-                $vendorsQuery->orderBy('products_count', 'desc');
-                break;
-            case 'sales':
-                $vendorsQuery->orderBy('total_sales', 'desc');
-                break;
-            case 'newest':
-                $vendorsQuery->orderBy('joined_at', 'desc');
-                break;
-            default:
-                $vendorsQuery->orderBy('rating', 'desc');
-        }
-
-        $vendors = $vendorsQuery->paginate(20);
-
-        // Get cities for filter
-        $cities = Vendor::active()
-            ->verified()
-            ->distinct()
-            ->pluck('city')
-            ->filter()
-            ->sort()
-            ->values();
-
-        return view('vendors.index', compact(
-            'vendors',
-            'cities',
-            'sortBy',
-            'search',
-            'city'
-        ));
+        return view('vendors.index', compact('vendors'));
     }
 
     /**
      * Display the specified vendor.
      */
-    public function show(Vendor $vendor, Request $request)
+    public function show(User $vendor)
     {
-        // Check if vendor is active and verified
-        if (!$vendor->is_active || !$vendor->is_verified) {
+        // Check if user is a vendor
+        if ($vendor->user_type !== 'vendor' || !$vendor->registration_completed) {
             abort(404);
         }
 
         // Get vendor's products
-        $productsQuery = Product::active()
-            ->inStock()
-            ->where('vendor_id', $vendor->id)
-            ->with(['category']);
-
-        // Apply filters
-        $categoryId = $request->get('category');
-        $sortBy = $request->get('sort', 'latest');
-        $search = $request->get('search');
-
-        if ($categoryId) {
-            $productsQuery->where('category_id', $categoryId);
-        }
-
-        if ($search) {
-            $productsQuery->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('name_ar', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('description_ar', 'like', "%{$search}%");
-            });
-        }
-
-        // Apply sorting
-        switch ($sortBy) {
-            case 'price_low':
-                $productsQuery->orderBy('price', 'asc');
-                break;
-            case 'price_high':
-                $productsQuery->orderBy('price', 'desc');
-                break;
-            case 'popular':
-                $productsQuery->orderBy('sales_count', 'desc');
-                break;
-            case 'rating':
-                $productsQuery->orderBy('rating', 'desc');
-                break;
-            default:
-                $productsQuery->orderBy('created_at', 'desc');
-        }
-
-        $products = $productsQuery->paginate(20);
-
-        // Get categories for this vendor's products
-        $categories = Product::active()
-            ->where('vendor_id', $vendor->id)
-            ->with('category')
-            ->get()
-            ->pluck('category')
-            ->unique('id')
-            ->values();
+        $products = Product::where('user_id', $vendor->id)
+            ->where('is_active', true)
+            ->with(['category'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
 
         // Get vendor statistics
         $stats = [
-            'total_products' => $vendor->products()->active()->count(),
-            'total_sales' => $vendor->total_sales,
-            'average_rating' => $vendor->average_rating,
-            'joined_date' => $vendor->joined_at,
+            'total_products' => Product::where('user_id', $vendor->id)->count(),
+            'active_products' => Product::where('user_id', $vendor->id)->where('is_active', true)->count(),
+            'total_views' => Product::where('user_id', $vendor->id)->sum('views_count') ?? 0,
+            'store_rating' => $vendor->store_rating ?? 0,
         ];
 
-        return view('vendors.show', compact(
-            'vendor',
-            'products',
-            'categories',
-            'stats',
-            'categoryId',
-            'sortBy',
-            'search'
-        ));
+        return view('vendors.show', compact('vendor', 'products', 'stats'));
     }
 
     /**
