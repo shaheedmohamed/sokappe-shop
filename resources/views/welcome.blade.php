@@ -40,20 +40,248 @@
         .hero-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 80px 0;
+            padding: 100px 0;
             margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .floating-icons {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+            color: rgba(255,255,255,0.3);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .hero-badge {
+            background: rgba(255,107,53,0.9);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         
         .hero-title {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
         
         .hero-subtitle {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             margin-bottom: 30px;
-            opacity: 0.9;
+            line-height: 2;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .pulse-btn {
+            animation: buttonPulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255,107,53,0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255,107,53,0); }
+            100% { box-shadow: 0 0 0 0 rgba(255,107,53,0); }
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero-main-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: perspective(1000px) rotateY(-5deg);
+            animation: imageFloat 6s ease-in-out infinite;
+        }
+        
+        @keyframes imageFloat {
+            0%, 100% { transform: perspective(1000px) rotateY(-5deg) translateY(0px); }
+            50% { transform: perspective(1000px) rotateY(-5deg) translateY(-10px); }
+        }
+        
+        .main-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+        
+        .floating-cards {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .product-card-mini {
+            position: absolute;
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: cardFloat 4s ease-in-out infinite;
+        }
+        
+        .card-1 {
+            top: 10%;
+            right: -20px;
+            animation-delay: 0s;
+        }
+        
+        .card-2 {
+            bottom: 30%;
+            left: -30px;
+            animation-delay: 1s;
+        }
+        
+        .card-3 {
+            top: 60%;
+            right: -15px;
+            animation-delay: 2s;
+        }
+        
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+        
+        .product-card-mini img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .card-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+        
+        .price {
+            font-weight: 600;
+            color: #ff6b35;
+        }
+        
+        .card-info i {
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .card-info i:hover {
+            transform: scale(1.2);
+            color: #ff6b35;
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+        
+        .scroll-text {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            opacity: 0.8;
+        }
+        
+        .scroll-arrow {
+            font-size: 1.2rem;
         }
         
         .search-box {
@@ -81,23 +309,52 @@
         
         .category-card {
             background: white;
-            border-radius: 15px;
-            padding: 30px 20px;
+            border-radius: 20px;
+            padding: 35px 25px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
             border: none;
             height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .category-card:hover::before {
+            left: 100%;
         }
         
         .category-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+            border: 2px solid rgba(102, 126, 234, 0.3);
         }
         
         .category-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
+            font-size: 4rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -737,6 +994,488 @@
             text-align: center;
         }
         
+        /* Flash Sale Banner */
+        .flash-sale-banner {
+            position: relative;
+            border-radius: 25px;
+            overflow: hidden;
+            margin: 40px 0;
+            min-height: 300px;
+        }
+        
+        .sale-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .sale-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .sale-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,107,53,0.9) 0%, rgba(247,147,30,0.8) 100%);
+        }
+        
+        .sale-content {
+            position: relative;
+            z-index: 2;
+            padding: 50px 40px;
+            color: white;
+        }
+        
+        .sale-badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            animation: flashPulse 1.5s infinite;
+        }
+        
+        @keyframes flashPulse {
+            0%, 100% { transform: scale(1); background: rgba(255,255,255,0.2); }
+            50% { transform: scale(1.05); background: rgba(255,255,255,0.3); }
+        }
+        
+        .sale-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .sale-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        
+        .countdown-timer {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .time-unit {
+            background: rgba(255,255,255,0.15);
+            border-radius: 15px;
+            padding: 15px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .time-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            animation: numberFlip 1s ease-in-out infinite;
+        }
+        
+        @keyframes numberFlip {
+            0%, 100% { transform: rotateX(0deg); }
+            50% { transform: rotateX(180deg); }
+        }
+        
+        .time-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .flash-btn {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            border: none;
+            padding: 15px 35px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: flashGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes flashGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,215,0,0.5); }
+            50% { box-shadow: 0 0 30px rgba(255,215,0,0.8); }
+        }
+        
+        .sale-products {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .sale-product-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            animation: productFloat 3s ease-in-out infinite;
+        }
+        
+        .sale-product-item:nth-child(2) {
+            animation-delay: 1s;
+        }
+        
+        .sale-product-item:nth-child(3) {
+            animation-delay: 2s;
+        }
+        
+        @keyframes productFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+        
+        .sale-product-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+        
+        .discount-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            font-weight: 700;
+            animation: badgeBounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes badgeBounce {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        /* Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.3);
+            transform: scale(0);
+            animation: rippleEffect 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        /* Enhanced Animations */
+        @media (prefers-reduced-motion: no-preference) {
+            .category-card {
+                animation: cardEntrance 0.6s ease-out forwards;
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            
+            .category-card:nth-child(1) { animation-delay: 0.1s; }
+            .category-card:nth-child(2) { animation-delay: 0.2s; }
+            .category-card:nth-child(3) { animation-delay: 0.3s; }
+            .category-card:nth-child(4) { animation-delay: 0.4s; }
+        }
+        
+        @keyframes cardEntrance {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Why Choose Us Section */
+        .why-choose-us {
+            background: white;
+            border-radius: 25px;
+            padding: 60px 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 60px 0;
+        }
+        
+        .features-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .features-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            background: #f8f9fa;
+            transform: translateX(10px);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .feature-content h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .feature-content p {
+            color: #666;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .features-image {
+            position: relative;
+            text-align: center;
+        }
+        
+        .main-feature-img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .floating-badges {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        
+        .badge-item {
+            position: absolute;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            animation: badgeFloat 3s ease-in-out infinite;
+        }
+        
+        .badge-1 {
+            top: 20%;
+            right: -10px;
+            color: #ffc107;
+        }
+        
+        .badge-2 {
+            bottom: 40%;
+            left: -20px;
+            color: #28a745;
+            animation-delay: 1s;
+        }
+        
+        .badge-3 {
+            top: 60%;
+            right: -15px;
+            color: #ff6b35;
+            animation-delay: 2s;
+        }
+        
+        @keyframes badgeFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        /* How It Works Section */
+        .how-it-works {
+            padding: 60px 0;
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            margin: 0 auto 25px;
+        }
+        
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .step-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Trust Section */
+        .trust-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 25px;
+            padding: 60px 40px;
+            color: white;
+        }
+        
+        .trust-item {
+            padding: 20px;
+        }
+        
+        .trust-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            animation: trustPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes trustPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .trust-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .trust-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Responsive Enhancements */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .sale-title {
+                font-size: 2rem;
+            }
+            
+            .countdown-timer {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .time-unit {
+                padding: 10px 15px;
+            }
+            
+            .time-number {
+                font-size: 1.5rem;
+            }
+            
+            .hero-stats {
+                justify-content: center;
+                gap: 20px;
+            }
+            
+            .floating-cards {
+                display: none;
+            }
+            
+            .why-choose-us {
+                padding: 40px 20px;
+            }
+            
+            .features-title {
+                font-size: 2rem;
+            }
+            
+            .feature-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .floating-badges {
+                display: none;
+            }
+        }
+        
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
@@ -864,26 +1603,233 @@
 
     <!-- Hero Section -->
     <section class="hero-section">
+        <div class="hero-animation">
+            <div class="floating-icons">
+                <i class="fas fa-mobile-alt floating-icon" style="top: 20%; left: 10%; animation-delay: 0s;"></i>
+                <i class="fas fa-laptop floating-icon" style="top: 60%; left: 15%; animation-delay: 1s;"></i>
+                <i class="fas fa-car floating-icon" style="top: 30%; right: 20%; animation-delay: 2s;"></i>
+                <i class="fas fa-home floating-icon" style="top: 70%; right: 10%; animation-delay: 3s;"></i>
+                <i class="fas fa-tshirt floating-icon" style="top: 40%; left: 80%; animation-delay: 4s;"></i>
+            </div>
+        </div>
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="hero-title">مرحباً بك في Sokappe Shop</h1>
-                    <p class="hero-subtitle">السوق الإلكتروني الأول في مصر - تسوق من أفضل المتاجر واحصل على أفضل الأسعار</p>
+                    <div class="hero-badge">
+                        <i class="fas fa-fire"></i>
+                        <span>الأكثر مبيعاً في مصر</span>
+                    </div>
+                    <h1 class="hero-title">
+                        اكتشف عالم من 
+                        <span class="text-gradient">المنتجات المذهلة</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        أكثر من 10,000 منتج متنوع
+                        <br>
+                        <i class="fas fa-shield-alt text-primary me-2"></i>
+                        ضمان الجودة والأمان
+                        <br>
+                        <i class="fas fa-shipping-fast text-warning me-2"></i>
+                        توصيل سريع لجميع المحافظات
+                    </p>
                     
                     <form action="{{ route('search') }}" method="GET" class="search-box d-flex mb-4">
                         <input type="text" name="q" class="form-control search-input flex-grow-1" placeholder="ابحث عن المنتجات..." value="{{ request('q') }}">
-                        <button type="submit" class="btn search-btn">
+                        <button type="submit" class="btn search-btn pulse-btn">
                             <i class="fas fa-search"></i>
                         </button>
                     </form>
                     
-                    <div class="d-flex gap-3">
-                        <a href="{{ route('categories.index') }}" class="btn btn-light btn-lg">تصفح الفئات</a>
-                        <a href="{{ route('products.create') }}" class="btn btn-outline-light btn-lg">أضف إعلانك</a>
+                    <div class="hero-buttons">
+                        <a href="{{ route('products.index') }}" class="btn btn-primary btn-lg pulse-btn">
+                            <i class="fas fa-rocket"></i> ابدأ التسوق
+                        </a>
+                        <a href="{{ route('register') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-store"></i> افتح متجرك
+                        </a>
+                    </div>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="15000">0</div>
+                            <div class="stat-label">منتج</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="5000">0</div>
+                            <div class="stat-label">عميل</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="500">0</div>
+                            <div class="stat-label">متجر</div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-6 text-center">
-                    <i class="fas fa-shopping-bag" style="font-size: 15rem; opacity: 0.3;"></i>
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <div class="hero-main-image">
+                            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Shopping" class="main-img">
+                            <div class="floating-cards">
+                                <div class="product-card-mini card-1">
+                                    <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Phone">
+                                    <div class="card-info">
+                                        <span class="price">2,500 ج.م</span>
+                                        <i class="fas fa-heart"></i>
+                                    </div>
+                                </div>
+                                <div class="product-card-mini card-2">
+                                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Shoes">
+                                    <div class="card-info">
+                                        <span class="price">850 ج.م</span>
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                </div>
+                                <div class="product-card-mini card-3">
+                                    <img src="https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Watch">
+                                    <div class="card-info">
+                                        <span class="price">1,200 ج.م</span>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="scroll-text">اكتشف المزيد</div>
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flash Sale Banner -->
+    <section class="container mb-5">
+        <div class="flash-sale-banner">
+            <div class="sale-background">
+                <img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Flash Sale">
+                <div class="sale-overlay"></div>
+            </div>
+            <div class="sale-content">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="sale-badge">
+                            <i class="fas fa-bolt"></i>
+                            <span>عرض محدود</span>
+                        </div>
+                        <h2 class="sale-title">تخفيضات هائلة تصل إلى 70%</h2>
+                        <p class="sale-subtitle">على مختارات من أفضل المنتجات - العرض ينتهي قريباً!</p>
+                        <div class="countdown-timer">
+                            <div class="time-unit">
+                                <span class="time-number" id="hours">12</span>
+                                <span class="time-label">ساعة</span>
+                            </div>
+                            <div class="time-unit">
+                                <span class="time-number" id="minutes">45</span>
+                                <span class="time-label">دقيقة</span>
+                            </div>
+                            <div class="time-unit">
+                                <span class="time-number" id="seconds">30</span>
+                                <span class="time-label">ثانية</span>
+                            </div>
+                        </div>
+                        <a href="{{ route('products.index') }}" class="btn btn-warning btn-lg flash-btn">
+                            <i class="fas fa-fire"></i> تسوق الآن
+                        </a>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="sale-products">
+                            <div class="sale-product-item">
+                                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Phone">
+                                <div class="discount-badge">-50%</div>
+                            </div>
+                            <div class="sale-product-item">
+                                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Shoes">
+                                <div class="discount-badge">-40%</div>
+                            </div>
+                            <div class="sale-product-item">
+                                <img src="https://images.unsplash.com/photo-1484704849700-f032a568e944?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Watch">
+                                <div class="discount-badge">-60%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="container mb-5">
+        <div class="why-choose-us">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="features-content">
+                        <h2 class="features-title">لماذا تختار Sokappe Shop؟</h2>
+                        <p class="features-subtitle">نحن نقدم أفضل تجربة تسوق إلكتروني في مصر</p>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>أمان وثقة مضمونة</h4>
+                                <p>جميع المتاجر موثقة ومعتمدة مع ضمان حماية بياناتك الشخصية</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>توصيل سريع ومجاني</h4>
+                                <p>توصيل مجاني لجميع المحافظات خلال 24-48 ساعة</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>دعم فني 24/7</h4>
+                                <p>فريق دعم متاح على مدار الساعة لمساعدتك في أي وقت</p>
+                            </div>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-undo-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>إرجاع مجاني خلال 14 يوم</h4>
+                                <p>يمكنك إرجاع أي منتج خلال 14 يوم مع استرداد كامل</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="features-image">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Shopping Experience" class="main-feature-img">
+                        <div class="floating-badges">
+                            <div class="badge-item badge-1">
+                                <i class="fas fa-star"></i>
+                                <span>تقييم 4.8/5</span>
+                            </div>
+                            <div class="badge-item badge-2">
+                                <i class="fas fa-users"></i>
+                                <span>+50K عميل</span>
+                            </div>
+                            <div class="badge-item badge-3">
+                                <i class="fas fa-award"></i>
+                                <span>الأفضل 2024</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -916,6 +1862,109 @@
             </a>
         </div>
         @endif
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="container mb-5">
+        <div class="how-it-works">
+            <div class="text-center mb-5">
+                <h2 class="section-title">كيف يعمل Sokappe Shop؟</h2>
+                <p class="section-subtitle">تسوق بسهولة في 4 خطوات بسيطة</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h4 class="step-title">ابحث عن المنتج</h4>
+                        <p class="step-desc">ابحث عن المنتج المطلوب من بين آلاف المنتجات المتاحة</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h4 class="step-title">أضف للسلة</h4>
+                        <p class="step-desc">أضف المنتجات المفضلة لديك إلى سلة التسوق</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h4 class="step-title">ادفع بأمان</h4>
+                        <p class="step-desc">ادفع بطريقة آمنة باستخدام وسائل الدفع المختلفة</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <h4 class="step-title">استلم طلبك</h4>
+                        <p class="step-desc">استلم طلبك في المكان والوقت المحدد</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Indicators Section -->
+    <section class="container mb-5">
+        <div class="trust-section">
+            <div class="row text-center">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h4 class="trust-number">100%</h4>
+                        <p class="trust-label">منتجات أصلية</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h4 class="trust-number">SSL</h4>
+                        <p class="trust-label">حماية مشفرة</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <h4 class="trust-number">5★</h4>
+                        <p class="trust-label">تقييم العملاء</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h4 class="trust-number">24/7</h4>
+                        <p class="trust-label">دعم فني</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Featured Products -->
@@ -1592,8 +2641,86 @@
             });
         }, observerOptions);
         
+        // Countdown Timer
+        function startCountdown() {
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            
+            if (!hoursEl || !minutesEl || !secondsEl) return;
+            
+            let hours = parseInt(hoursEl.textContent);
+            let minutes = parseInt(minutesEl.textContent);
+            let seconds = parseInt(secondsEl.textContent);
+            
+            setInterval(() => {
+                seconds--;
+                
+                if (seconds < 0) {
+                    seconds = 59;
+                    minutes--;
+                    
+                    if (minutes < 0) {
+                        minutes = 59;
+                        hours--;
+                        
+                        if (hours < 0) {
+                            hours = 23;
+                        }
+                    }
+                }
+                
+                hoursEl.textContent = hours.toString().padStart(2, '0');
+                minutesEl.textContent = minutes.toString().padStart(2, '0');
+                secondsEl.textContent = seconds.toString().padStart(2, '0');
+            }, 1000);
+        }
+        
+        // Hero Stats Animation
+        function animateHeroStats() {
+            const heroStats = document.querySelectorAll('.hero-stats .stat-number');
+            
+            heroStats.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        stat.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 30);
+            });
+        }
+        
+        // Parallax Effect for Hero
+        function initParallax() {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const parallaxElements = document.querySelectorAll('.floating-icon');
+                
+                parallaxElements.forEach((element, index) => {
+                    const speed = 0.5 + (index * 0.1);
+                    element.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+            });
+        }
+        
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Start countdown timer
+            startCountdown();
+            
+            // Animate hero stats
+            setTimeout(animateHeroStats, 1000);
+            
+            // Initialize parallax
+            initParallax();
+            
             // Observe the stats section
             const statsSection = document.querySelector('.live-stats');
             if (statsSection) {
@@ -1607,6 +2734,29 @@
                     currentSlide = -1;
                 }
             }, 5000);
+            
+            // Add click effects to cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Create ripple effect
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
         });
         
         // Add to cart function (placeholder)
