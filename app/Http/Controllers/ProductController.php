@@ -13,9 +13,8 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $productsQuery = Product::active()
-            ->inStock()
-            ->with(['vendor', 'category']);
+        $productsQuery = Product::where('is_active', true)
+            ->with(['category']);
 
         // Apply filters
         $categoryId = $request->get('category');
@@ -69,10 +68,10 @@ class ProductController extends Controller
         $products = $productsQuery->paginate(20);
 
         // Get categories for filter
-        $categories = Category::active()->main()->get();
+        $categories = Category::where('is_active', true)->where('parent_id', null)->get();
 
         // Get price range for filters
-        $priceRange = Product::active()
+        $priceRange = Product::where('is_active', true)
             ->selectRaw('MIN(price) as min_price, MAX(price) as max_price')
             ->first();
 
@@ -153,5 +152,35 @@ class ProductController extends Controller
             ->paginate(20);
 
         return view('products.sale', compact('products'));
+    }
+
+    /**
+     * Show user's favorite products
+     */
+    public function favorites()
+    {
+        // For now, return empty favorites page
+        // This will be implemented when we add favorites functionality
+        return view('products.favorites', [
+            'favorites' => collect([])
+        ]);
+    }
+
+    /**
+     * Show create product form
+     */
+    public function create()
+    {
+        $categories = Category::where('is_active', true)->get();
+        return view('products.create', compact('categories'));
+    }
+
+    /**
+     * Store a new product
+     */
+    public function store(Request $request)
+    {
+        // This will be implemented later
+        return redirect()->back()->with('success', 'سيتم إضافة هذه الوظيفة قريباً');
     }
 }
