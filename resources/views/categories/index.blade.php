@@ -1,392 +1,51 @@
-@extends('layouts.app')
-
-@section('title', 'الفئات - Sokappe Shop')
-
-@push('styles')
-<style>
-    .page-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 60px 0;
-        margin-bottom: 50px;
-    }
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الفئات - Sokappe Shop</title>
+    <meta name="description" content="تصفح جميع فئات المنتجات في Sokappe Shop">
     
-    .page-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 15px;
-    }
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
     
-    .page-subtitle {
-        font-size: 1.2rem;
-        opacity: 0.9;
-    }
+    <!-- Bootstrap RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     
-    /* Category Filter Items */
-    .category-filter-item {
-        display: block;
-        background: white;
-        border-radius: 10px;
-        padding: 20px;
-        text-align: center;
-        text-decoration: none;
-        color: inherit;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        transition: all 0.3s ease;
-        height: 100%;
-        border: 2px solid transparent;
-    }
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    .category-filter-item:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        text-decoration: none;
-        color: inherit;
-        border-color: #667eea;
-    }
-    
-    .category-filter-item.active {
-        border-color: #667eea;
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-    }
-    
-    .category-icon {
-        font-size: 2.5rem;
-        margin-bottom: 15px;
-        color: #667eea;
-    }
-    
-    .category-name {
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
-    
-    .category-count {
-        font-size: 0.85rem;
-        color: #666;
-    }
-    
-    /* Filters Section */
-    .filters-section {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-    }
-    
-    /* Product Cards */
-    .product-card {
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        border: 2px solid transparent;
-        margin-bottom: 20px;
-        position: relative;
-    }
-    
-    .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-        border-color: #ff6b35;
-    }
-    
-    .product-image {
-        height: 200px;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        color: #adb5bd;
-        position: relative;
-    }
-    
-    .product-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: #ff6b35;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 15px;
-        font-size: 0.8rem;
-        font-weight: 600;
-    }
-    
-    .product-info {
-        padding: 20px;
-    }
-    
-    .product-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 10px;
-        line-height: 1.4;
-        height: 2.8em;
-        overflow: hidden;
-    }
-    
-    .product-price {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #ff6b35;
-        margin-bottom: 8px;
-    }
-    
-    .product-old-price {
-        font-size: 1rem;
-        color: #999;
-        text-decoration: line-through;
-        margin-right: 10px;
-    }
-    
-    .product-meta {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.85rem;
-        color: #666;
-        margin-bottom: 15px;
-    }
-    
-    .product-actions {
-        display: flex;
-        gap: 10px;
-    }
-    
-    .btn-add-cart {
-        background: #ff6b35;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        flex: 1;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-add-cart:hover {
-        background: #e55a2b;
-        color: white;
-        transform: translateY(-2px);
-    }
-    
-    .btn-favorite {
-        background: #f8f9fa;
-        color: #666;
-        border: 2px solid #e9ecef;
-        padding: 10px 12px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-favorite:hover,
-    .btn-favorite.active {
-        background: #ff6b35;
-        color: white;
-        border-color: #ff6b35;
-    }
-</style>
-@endpush
-
-@section('content')
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <h1 class="page-title">تصفح الفئات</h1>
-                    <p class="page-subtitle">اكتشف المنتجات حسب الفئة المطلوبة</p>
-                </div>
-                <div class="col-lg-4 text-center">
-                    <i class="fas fa-th-large" style="font-size: 8rem; opacity: 0.3;"></i>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Categories Grid -->
-    <section class="container mb-5">
-        <h2 class="section-title mb-4">تصفح حسب الفئة</h2>
-        <div class="row g-3 mb-5">
-            @forelse($categories as $category)
-                <div class="col-lg-3 col-md-4 col-6">
-                    <a href="javascript:void(0)" onclick="filterByCategory({{ $category->id }}, '{{ $category->name_ar ?? $category->name }}')" class="category-filter-item">
-                        <div class="category-icon">
-                            <i class="{{ $category->icon ?? 'fas fa-cube' }}"></i>
-                        </div>
-                        <h6 class="category-name">{{ $category->name_ar ?? $category->name }}</h6>
-                        <span class="category-count">{{ rand(10, 100) }} منتج</span>
-                    </a>
-                </div>
-            @empty
-                <div class="col-12">
-                    <div class="text-center py-5">
-                        <i class="fas fa-box-open" style="font-size: 4rem; color: #ccc; margin-bottom: 20px;"></i>
-                        <h3 class="text-muted">لا توجد فئات متاحة حالياً</h3>
-                        <p class="text-muted">سيتم إضافة فئات جديدة قريباً</p>
-                        <a href="{{ route('home') }}" class="btn btn-primary">العودة للرئيسية</a>
-                    </div>
-                </div>
-            @endforelse
-        </div>
-
-        <!-- Search and Filter Section -->
-        <div class="filters-section mb-4">
-            <form method="GET" action="{{ route('categories.index') }}" id="filterForm">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="form-label">البحث في المنتجات</label>
-                        <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="ابحث عن منتج...">
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">الفئة</label>
-                        <select class="form-select" name="category_id" id="categoryFilter">
-                            <option value="">جميع الفئات</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name_ar ?? $category->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">السعر من</label>
-                        <input type="number" class="form-control" name="min_price" value="{{ request('min_price') }}" placeholder="0">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label">السعر إلى</label>
-                        <input type="number" class="form-control" name="max_price" value="{{ request('max_price') }}" placeholder="10000">
-                    </div>
-                    <div class="col-md-1">
-                        <label class="form-label">&nbsp;</label>
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <!-- Products Results -->
-        <div class="products-section">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="results-title">نتائج البحث</h3>
-                <div class="results-info">
-                    <span class="text-muted">عرض {{ $products->count() }} من أصل {{ $products->total() }} منتج</span>
-                </div>
-            </div>
-
-            <div class="row">
-                @forelse($products as $product)
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="product-card">
-                        @if($product->is_featured)
-                            <div class="product-badge">مميز</div>
-                        @endif
-                        
-                        <div class="product-image">
-                            <i class="fas fa-box"></i>
-                        </div>
-                        
-                        <div class="product-info">
-                            <h5 class="product-title">{{ $product->name_ar ?? $product->name }}</h5>
-                            
-                            <div class="product-price">
-                                {{ number_format($product->price) }} جنيه
-                                @if($product->sale_price && $product->sale_price > $product->price)
-                                    <span class="product-old-price">{{ number_format($product->sale_price) }} جنيه</span>
-                                @endif
-                            </div>
-                            
-                            <div class="product-meta">
-                                <div class="product-category">
-                                    <i class="fas fa-tag"></i>
-                                    {{ $product->category->name_ar ?? $product->category->name ?? 'غير محدد' }}
-                                </div>
-                                <div class="product-views">
-                                    <i class="fas fa-eye"></i>
-                                    {{ $product->views_count ?? 0 }}
-                                </div>
-                            </div>
-                            
-                            <div class="product-actions">
-                                <button class="btn btn-add-cart" onclick="addToCart({{ $product->id }}, '{{ $product->name_ar ?? $product->name }}', {{ $product->price }})">
-                                    <i class="fas fa-cart-plus"></i> أضف للسلة
-                                </button>
-                                <button class="btn btn-favorite" onclick="toggleFavorite(this)">
-                                    <i class="far fa-heart"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @empty
-                <div class="col-12">
-                    <div class="empty-state text-center py-5">
-                        <i class="fas fa-search" style="font-size: 4rem; color: #ddd; margin-bottom: 20px;"></i>
-                        <h3 class="text-muted">لا توجد منتجات</h3>
-                        <p class="text-muted">جرب تغيير معايير البحث</p>
-                    </div>
-                </div>
-                @endforelse
-            </div>
-
-            <!-- Pagination -->
-            @if($products->hasPages())
-                <div class="d-flex justify-content-center mt-4">
-                    {{ $products->appends(request()->query())->links() }}
-                </div>
-            @endif
-        </div>
-    </section>
-@endsection
-
-@push('scripts')
-<script>
-    let cart = [];
-    
-    function filterByCategory(categoryId, categoryName) {
-        document.getElementById('categoryFilter').value = categoryId;
-        document.querySelectorAll('.category-filter-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        event.target.closest('.category-filter-item').classList.add('active');
-        document.getElementById('filterForm').submit();
-    }
-    
-    function addToCart(productId, productName, productPrice) {
-        console.log('تم إضافة المنتج للسلة:', productName);
-        
-        const button = event.target.closest('.btn-add-cart');
-        const originalText = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-check"></i> تم الإضافة';
-        button.style.background = '#28a745';
-        
-        setTimeout(() => {
-            button.innerHTML = originalText;
-            button.style.background = '#ff6b35';
-        }, 1500);
-    }
-    
-    function toggleFavorite(button) {
-        button.classList.toggle('active');
-        const icon = button.querySelector('i');
-        
-        if (button.classList.contains('active')) {
-            icon.classList.remove('far');
-            icon.classList.add('fas');
-        } else {
-            icon.classList.remove('fas');
-            icon.classList.add('far');
+    <!-- Custom CSS -->
+    <style>
+        * {
+            font-family: 'Cairo', sans-serif;
         }
-    }
-</script>
-@endpush
+        
+        body {
+            background-color: #f8f9fa;
+            direction: rtl;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: white !important;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 50px;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 15px;
         }
