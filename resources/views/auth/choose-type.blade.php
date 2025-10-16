@@ -194,11 +194,11 @@
                     <input type="radio" name="user_type" value="customer" class="radio-input" id="customer">
                     <div class="radio-indicator"></div>
                     <div class="account-type-icon">
-                        💼
+                        <i class="fas fa-shopping-cart"></i>
                     </div>
-                    <h3 class="account-type-title">طالب خدمة</h3>
+                    <h3 class="account-type-title">مشتري</h3>
                     <p class="account-type-desc">
-                        أريد تصفح ومقارنة وشراء عروض من المستقلين المحترفين
+                        أريد تصفح ومقارنة وشراء المنتجات من المتاجر المختلفة
                     </p>
                 </div>
                 
@@ -206,11 +206,11 @@
                     <input type="radio" name="user_type" value="vendor" class="radio-input" id="vendor">
                     <div class="radio-indicator"></div>
                     <div class="account-type-icon">
-                        ⭐
+                        <i class="fas fa-store"></i>
                     </div>
-                    <h3 class="account-type-title">مستقل</h3>
+                    <h3 class="account-type-title">تاجر</h3>
                     <p class="account-type-desc">
-                        أريد عرض خدماتي وبيع منتجاتي من خلال متجري
+                        أريد عرض وبيع منتجاتي من خلال متجري الإلكتروني
                     </p>
                 </div>
                 
