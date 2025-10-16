@@ -21,6 +21,23 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'user_type',
+        'phone',
+        'governorate',
+        'city',
+        'store_name',
+        'store_phone',
+        'store_description',
+        'store_address',
+        'store_latitude',
+        'store_longitude',
+        'store_logo',
+        'store_cover',
+        'store_verified',
+        'store_rating',
+        'store_reviews_count',
+        'registration_completed',
+        'store_created_at',
     ];
 
     /**
@@ -43,6 +60,44 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'store_verified' => 'boolean',
+            'registration_completed' => 'boolean',
+            'store_created_at' => 'datetime',
+            'store_rating' => 'decimal:2',
+            'store_latitude' => 'decimal:8',
+            'store_longitude' => 'decimal:8',
         ];
+    }
+
+    /**
+     * Get products for this user (if vendor)
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    /**
+     * Check if user is a vendor
+     */
+    public function isVendor()
+    {
+        return $this->user_type === 'vendor';
+    }
+
+    /**
+     * Check if user is a customer
+     */
+    public function isCustomer()
+    {
+        return $this->user_type === 'customer';
+    }
+
+    /**
+     * Get store display name
+     */
+    public function getStoreDisplayNameAttribute()
+    {
+        return $this->store_name ?: $this->name;
     }
 }
