@@ -2,6 +2,8 @@
 
 @section('title', 'إدارة المنتجات')
 @section('page-title', 'إدارة المنتجات')
+@section('page-subtitle', 'إدارة جميع منتجات المتاجر')
+@section('page-icon', '<i class="fas fa-box"></i>')
 
 @section('content')
 <!-- Statistics Row -->

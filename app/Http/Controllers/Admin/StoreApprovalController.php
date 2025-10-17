@@ -64,7 +64,7 @@ class StoreApprovalController extends Controller
      */
     public function approve(Request $request, User $user)
     {
-        if (!$user->store_name || $user->store_status !== 'pending') {
+        if (!$user->store_name || !in_array($user->store_status, ['pending', 'rejected'])) {
             return response()->json(['success' => false, 'message' => 'لا يمكن الموافقة على هذا المتجر']);
         }
 
@@ -86,7 +86,7 @@ class StoreApprovalController extends Controller
             'reason' => 'required|string|max:500'
         ]);
 
-        if (!$user->store_name || $user->store_status !== 'pending') {
+        if (!$user->store_name || !in_array($user->store_status, ['pending', 'approved'])) {
             return response()->json(['success' => false, 'message' => 'لا يمكن رفض هذا المتجر']);
         }
 
@@ -100,7 +100,38 @@ class StoreApprovalController extends Controller
     }
 
     /**
-     * Get all store requests (for filtering)
+     * Show rejected store requests
+     */
+    public function rejected()
+    {
+        $rejectedStores = User::whereNotNull('store_name')
+            ->where('store_status', 'rejected')
+            ->latest('updated_at')
+            ->paginate(20);
+
+        $stats = [
+            'total' => $rejectedStores->total(),
+            'this_week' => User::whereNotNull('store_name')
+                ->where('store_status', 'rejected')
+                ->where('updated_at', '>=', now()->subWeek())
+                ->count(),
+            'today' => User::whereNotNull('store_name')
+                ->where('store_status', 'rejected')
+                ->whereDate('updated_at', today())
+                ->count(),
+            'pending' => User::whereNotNull('store_name')
+                ->where('store_status', 'pending')
+                ->count(),
+            'approved' => User::whereNotNull('store_name')
+                ->where('store_status', 'approved')
+                ->count(),
+        ];
+
+        return view('admin.store-approvals.rejected', compact('rejectedStores', 'stats'));
+    }
+
+    /**
+     * Get stores by status for AJAX requests
      */
     public function getStores(Request $request)
     {

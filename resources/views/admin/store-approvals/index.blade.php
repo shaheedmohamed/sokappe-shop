@@ -2,6 +2,8 @@
 
 @section('title', 'طلبات المتاجر')
 @section('page-title', 'إدارة طلبات المتاجر')
+@section('page-subtitle', 'مراجعة والموافقة على طلبات المتاجر الجديدة')
+@section('page-icon', '<i class="fas fa-clipboard-check"></i>')
 
 @section('content')
 <!-- Statistics Cards -->
@@ -266,9 +268,14 @@
                             </td>
                             <td>{{ $store->updated_at->format('Y/m/d H:i') }}</td>
                             <td>
-                                <button class="btn btn-outline-primary btn-sm" onclick="viewStoreDetails({{ $store->id }})">
-                                    <i class="fas fa-eye"></i>
-                                </button>
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-info" title="عرض التفاصيل" onclick="viewStoreDetails({{ $store->id }})">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success" title="قبول المتجر" onclick="approveRejectedStore({{ $store->id }}, '{{ $store->store_name }}')">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -402,6 +409,34 @@ function confirmReject() {
         console.error('Error:', error);
         alert('حدث خطأ أثناء رفض المتجر');
     });
+}
+
+function approveRejectedStore(storeId, storeName) {
+    if (confirm(`هل أنت متأكد من الموافقة على متجر "${storeName}" المرفوض سابقاً؟`)) {
+        fetch(`/admin/store-approvals/${storeId}/approve`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                alert(`تم الموافقة على متجر "${data.store_name}" بنجاح`);
+                
+                // Reload page to update stats and move store to approved tab
+                location.reload();
+            } else {
+                alert('حدث خطأ: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('حدث خطأ أثناء الموافقة على المتجر');
+        });
+    }
 }
 </script>
 @endpush

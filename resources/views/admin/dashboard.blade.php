@@ -2,6 +2,8 @@
 
 @section('title', 'لوحة التحكم')
 @section('page-title', 'لوحة التحكم الرئيسية')
+@section('page-subtitle', 'نظرة عامة على إحصائيات النظام')
+@section('page-icon', '<i class="fas fa-tachometer-alt"></i>')
 
 @section('content')
 <!-- Statistics Cards -->

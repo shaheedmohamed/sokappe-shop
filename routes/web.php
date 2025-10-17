@@ -90,11 +90,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/products', [AdminController::class, 'products'])->name('products');
     Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
     Route::get('/vendors', [AdminController::class, 'vendors'])->name('vendors');
+    Route::get('/vendors/rejected', [AdminController::class, 'rejectedVendors'])->name('vendors.rejected');
     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
     Route::get('/logs', [AdminController::class, 'logs'])->name('logs');
     
     // Store approval routes
     Route::get('/store-approvals', [StoreApprovalController::class, 'index'])->name('store-approvals');
+    Route::get('/store-approvals/rejected', [StoreApprovalController::class, 'rejected'])->name('store-approvals.rejected');
     Route::get('/store-approvals/{user}', [StoreApprovalController::class, 'show'])->name('store-approvals.show');
     Route::post('/store-approvals/{user}/approve', [StoreApprovalController::class, 'approve'])->name('store-approvals.approve');
     Route::post('/store-approvals/{user}/reject', [StoreApprovalController::class, 'reject'])->name('store-approvals.reject');

@@ -2,6 +2,8 @@
 
 @section('title', 'إدارة المستخدمين')
 @section('page-title', 'إدارة المستخدمين')
+@section('page-subtitle', 'إدارة جميع مستخدمي النظام')
+@section('page-icon', '<i class="fas fa-users"></i>')
 
 @section('content')
 <!-- Statistics Row -->

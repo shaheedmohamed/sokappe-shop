@@ -93,11 +93,23 @@ class AdminController extends Controller
     public function vendors()
     {
         $vendors = User::whereNotNull('store_name')
+            ->where('store_status', 'approved')
             ->withCount(['products'])
             ->latest()
             ->paginate(20);
 
         return view('admin.vendors.index', compact('vendors'));
+    }
+
+    public function rejectedVendors()
+    {
+        $rejectedVendors = User::whereNotNull('store_name')
+            ->where('store_status', 'rejected')
+            ->withCount(['products'])
+            ->latest('updated_at')
+            ->paginate(20);
+
+        return view('admin.vendors.rejected', compact('rejectedVendors'));
     }
 
     public function settings()
