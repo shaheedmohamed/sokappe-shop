@@ -41,6 +41,11 @@ class LoginController extends Controller
 
             $user = Auth::user();
             
+            // Check if user is admin
+            if ($user->is_admin) {
+                return redirect()->route('admin.dashboard')->with('success', 'مرحباً بك في لوحة التحكم!');
+            }
+            
             // Check if registration is completed
             if (!$user->registration_completed) {
                 return redirect()->route('register.choose-type');

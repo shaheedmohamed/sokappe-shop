@@ -98,6 +98,13 @@
                                     <i class="fas fa-user-circle me-2"></i>الملف الشخصي
                                 </a>
                             </li>
+                            @if(Auth::user()->is_admin)
+                            <li>
+                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                    <i class="fas fa-crown me-2"></i>لوحة التحكم
+                                </a>
+                            </li>
+                            @endif
                             @if(Auth::user()->store_name)
                             <li>
                                 <a class="dropdown-item" href="{{ route('vendor.profile') }}">

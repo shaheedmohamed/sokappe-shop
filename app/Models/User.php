@@ -38,6 +38,7 @@ class User extends Authenticatable
         'store_reviews_count',
         'registration_completed',
         'store_created_at',
+        'is_admin',
     ];
 
     /**
@@ -66,6 +67,7 @@ class User extends Authenticatable
             'store_rating' => 'decimal:2',
             'store_latitude' => 'decimal:8',
             'store_longitude' => 'decimal:8',
+            'is_admin' => 'boolean',
         ];
     }
 

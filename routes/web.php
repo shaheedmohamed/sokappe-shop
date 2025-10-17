@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -76,6 +77,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings', function () {
         return view('settings.index');
     })->name('settings.index');
+});
+
+// Admin routes
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::get('/products', [AdminController::class, 'products'])->name('products');
+    Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
+    Route::get('/vendors', [AdminController::class, 'vendors'])->name('vendors');
+    Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+    Route::get('/logs', [AdminController::class, 'logs'])->name('logs');
 });
 
 // Additional routes for future implementation
