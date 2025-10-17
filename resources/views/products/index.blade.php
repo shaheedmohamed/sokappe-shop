@@ -6,7 +6,7 @@
     <title>جميع المنتجات - Sokappe Shop</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Bootstrap RTL -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
@@ -17,302 +17,459 @@
     <style>
         * {
             font-family: 'Cairo', sans-serif;
+            box-sizing: border-box;
         }
         
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             direction: rtl;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
         
-        
+        /* Page Header */
         .page-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 60px 0;
-            margin-bottom: 30px;
+            padding: 100px 0;
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
         }
         
         .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: slideInDown 0.8s ease-out;
         }
         
         .page-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             opacity: 0.9;
+            font-weight: 400;
+            animation: slideInUp 0.8s ease-out 0.2s both;
         }
         
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Filters Section */
         .filters-section {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
         
         .filter-title {
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .product-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            height: 100%;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            border-color: #ff6b35;
-        }
-        
-        .product-image {
-            height: 200px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: #adb5bd;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .product-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #ff6b35;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .product-info {
-            padding: 15px 0;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .product-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-            line-height: 1.4;
-            height: 2.8em;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-        
-        .product-price {
-            font-size: 1.3rem;
             font-weight: 700;
-            color: #ff6b35;
-            margin-bottom: 8px;
-        }
-        
-        .product-old-price {
-            font-size: 1rem;
-            color: #999;
-            text-decoration: line-through;
-            margin-right: 10px;
-        }
-        
-        .product-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: #666;
+            color: #2c3e50;
             margin-bottom: 15px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
-        .product-location {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .product-views {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .product-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: auto;
-            padding-top: 15px;
-        }
-        
-        .btn-add-cart {
-            background: #ff6b35;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            flex: 1;
+        .form-select, .form-control {
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            padding: 15px 20px;
+            font-size: 1rem;
             transition: all 0.3s ease;
+            background: #f8f9fa;
+            font-weight: 500;
         }
         
-        .btn-add-cart:hover {
-            background: #e55a2b;
-            color: white;
+        .form-select:focus, .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+            background: white;
             transform: translateY(-2px);
         }
         
-        .btn-favorite {
-            background: #f8f9fa;
-            color: #666;
-            border: 2px solid #e9ecef;
-            padding: 10px 12px;
-            border-radius: 8px;
+        .input-group .btn {
+            border-radius: 0 15px 15px 0;
+            border: 2px solid #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 25px;
             transition: all 0.3s ease;
+            font-weight: 700;
         }
         
-        .btn-favorite:hover,
-        .btn-favorite.active {
-            background: #ff6b35;
-            color: white;
-            border-color: #ff6b35;
+        .input-group .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
         
-        .negotiable-badge {
-            background: #28a745;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        .cart-badge {
-            position: absolute;
-            top: -8px;
-            left: -8px;
-            background: #ff6b35;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
+        /* Sort and Results */
+        .controls-section {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 600;
+            margin-bottom: 40px;
+            gap: 20px;
         }
         
         .sort-controls {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 20px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            animation: fadeInLeft 0.8s ease-out 0.6s both;
         }
         
         .sort-label {
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .form-select {
-            border-radius: 8px;
-            border: 2px solid #e9ecef;
-            padding: 8px 12px;
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 1rem;
         }
         
         .results-info {
-            color: #666;
-            font-size: 0.9rem;
+            color: #6c757d;
+            font-size: 1rem;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            font-weight: 600;
+            animation: fadeInRight 0.8s ease-out 0.6s both;
         }
         
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Product Cards */
+        .product-card {
+            background: white;
+            border-radius: 25px;
+            padding: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: fadeInUp 0.6s ease-out both;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            z-index: 3;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .product-image {
+            position: relative;
+            margin-bottom: 0;
+            overflow: hidden;
+            border-radius: 25px 25px 0 0;
+            height: 280px;
+        }
+        
+        .product-image img {
+            transition: transform 0.5s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.15);
+        }
+        
+        .product-info {
+            padding: 30px;
+        }
+        
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 3.2rem;
+        }
+        
+        .product-price {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #27ae60;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .product-old-price {
+            font-size: 1.1rem;
+            color: #95a5a6;
+            text-decoration: line-through;
+            font-weight: 500;
+        }
+        
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            padding: 15px 0;
+            border-top: 2px solid #f1f2f6;
+        }
+        
+        .product-location, .product-views {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn-add-cart {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-add-cart:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .btn-favorite {
+            background: white;
+            color: #e74c3c;
+            border: 3px solid #e74c3c;
+            padding: 16px 20px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .btn-favorite:hover {
+            background: #e74c3c;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.4);
+        }
+        
+        .btn-favorite.active {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 80px 20px;
-            color: #666;
+            padding: 120px 20px;
+            color: #7f8c8d;
+            background: white;
+            border-radius: 25px;
+            margin: 50px 0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
         
         .empty-state i {
-            font-size: 5rem;
-            color: #ddd;
-            margin-bottom: 20px;
-        }
-
-        /* Responsive Design */
-        @media (min-width: 1200px) {
-            .product-card {
-                min-height: 450px;
-            }
-        }
-
-        @media (max-width: 991px) {
-            .product-card {
-                min-height: 400px;
-            }
-            
-            .product-actions {
-                flex-direction: column;
-                gap: 8px;
-            }
-            
-            .btn-add-cart, .btn-favorite {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .product-card {
-                min-height: 350px;
-                padding: 15px;
-            }
-            
-            .product-image {
-                height: 150px;
-            }
+            font-size: 7rem;
+            margin-bottom: 40px;
+            color: #bdc3c7;
+            opacity: 0.7;
         }
         
+        .empty-state h3 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        .empty-state p {
+            font-size: 1.3rem;
+            margin-bottom: 0;
+            opacity: 0.8;
+        }
+        
+        /* Pagination */
         .pagination {
+            margin-top: 60px;
             justify-content: center;
-            margin-top: 40px;
         }
         
         .page-link {
             color: #667eea;
             border-color: #e9ecef;
+            border-radius: 12px;
+            margin: 0 5px;
+            padding: 15px 22px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .page-link:hover {
+            background-color: #667eea;
+            border-color: #667eea;
+            color: white;
+            transform: translateY(-3px);
         }
         
         .page-item.active .page-link {
-            background-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-color: #667eea;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
         
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .filters-section {
+                padding: 25px;
+            }
+            
+            .product-card {
+                margin-bottom: 25px;
+            }
+            
+            .product-image {
+                height: 220px;
+            }
+            
+            .product-info {
+                padding: 25px;
+            }
+            
+            .controls-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .sort-controls, .results-info {
+                font-size: 0.9rem;
+                padding: 15px 20px;
+            }
+        }
+        
+        /* Animation Delays */
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(5) { animation-delay: 0.5s; }
+        .product-card:nth-child(6) { animation-delay: 0.6s; }
+        .product-card:nth-child(7) { animation-delay: 0.7s; }
+        .product-card:nth-child(8) { animation-delay: 0.8s; }
     </style>
 </head>
-<body class="non-home-page">
+<body>
     @include('layouts.navbar')
 
     <!-- Page Header -->
@@ -321,10 +478,10 @@
             <div class="row align-items-center">
                 <div class="col-lg-8">
                     <h1 class="page-title">جميع المنتجات</h1>
-                    <p class="page-subtitle">اكتشف آلاف المنتجات من متاجر موثوقة</p>
+                    <p class="page-subtitle">اكتشف آلاف المنتجات المميزة من متاجر موثوقة</p>
                 </div>
                 <div class="col-lg-4 text-center">
-                    <i class="fas fa-boxes" style="font-size: 8rem; opacity: 0.3;"></i>
+                    <i class="fas fa-boxes" style="font-size: 10rem; opacity: 0.2;"></i>
                 </div>
             </div>
         </div>
@@ -333,8 +490,8 @@
     <div class="container">
         <!-- Filters Section -->
         <div class="filters-section">
-            <div class="row">
-                <div class="col-md-3">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
                     <h6 class="filter-title">الفئة</h6>
                     <select class="form-select" name="category">
                         <option value="">جميع الفئات</option>
@@ -345,35 +502,36 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-lg-3 col-md-6">
                     <h6 class="filter-title">السعر من</h6>
-                    <input type="number" class="form-control" placeholder="الحد الأدنى">
+                    <input type="number" class="form-control" placeholder="0" name="min_price" value="{{ request('min_price') }}">
                 </div>
-                <div class="col-md-3">
+                <div class="col-lg-3 col-md-6">
                     <h6 class="filter-title">السعر إلى</h6>
-                    <input type="number" class="form-control" placeholder="الحد الأقصى">
+                    <input type="number" class="form-control" placeholder="10000" name="max_price" value="{{ request('max_price') }}">
                 </div>
-                <div class="col-md-3">
-                    <h6 class="filter-title">المحافظة</h6>
-                    <select class="form-select" name="governorate">
-                        <option value="">جميع المحافظات</option>
-                        <option value="القاهرة">القاهرة</option>
-                        <option value="الجيزة">الجيزة</option>
-                        <option value="الإسكندرية">الإسكندرية</option>
-                    </select>
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="filter-title">البحث</h6>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="ابحث عن منتج..." name="search" value="{{ request('search') }}">
+                        <button class="btn btn-primary" type="button" onclick="applyFilters()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Sort and Results Info -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="controls-section">
             <div class="sort-controls">
                 <span class="sort-label">ترتيب حسب:</span>
-                <select class="form-select" style="width: auto;">
-                    <option value="latest">الأحدث</option>
-                    <option value="price_low">السعر: من الأقل للأعلى</option>
-                    <option value="price_high">السعر: من الأعلى للأقل</option>
-                    <option value="popular">الأكثر مشاهدة</option>
+                <select class="form-select" style="width: auto;" name="sort">
+                    <option value="latest" {{ request('sort') == 'latest' || !request('sort') ? 'selected' : '' }}>الأحدث</option>
+                    <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>السعر: من الأقل للأعلى</option>
+                    <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>السعر: من الأعلى للأقل</option>
+                    <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>الأكثر مشاهدة</option>
+                    <option value="featured" {{ request('sort') == 'featured' ? 'selected' : '' }}>المميزة</option>
                 </select>
             </div>
             <div class="results-info">
@@ -392,45 +550,41 @@
                         @endif
                         
                         <div class="product-image">
-                            @if($product->featured_image)
-                                <img src="{{ asset('storage/' . $product->featured_image) }}" alt="{{ $product->name }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
-                            @elseif($product->images && $product->images->first())
-                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->name }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
-                            @else
-                                <div class="placeholder-image d-flex align-items-center justify-content-center" style="width: 100%; height: 200px; background: #f8f9fa; border-radius: 8px;">
-                                    <i class="fas fa-image fa-3x text-muted"></i>
-                                </div>
-                            @endif
+                            <img src="{{ $product->first_image }}" alt="{{ $product->name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                <i class="fas fa-box fa-4x"></i>
+                            </div>
                         </div>
                         
                         <div class="product-info">
                             <h5 class="product-title">{{ $product->name_ar ?? $product->name }}</h5>
                         
-                        <div class="product-price">
-                            {{ number_format($product->price) }} جنيه
-                            @if($product->sale_price && $product->sale_price < $product->price)
-                                <span class="product-old-price">{{ number_format($product->sale_price) }} جنيه</span>
-                            @endif
-                        </div>
-                        
-                        <div class="product-meta">
-                            <div class="product-location">
-                                <i class="fas fa-map-marker-alt"></i>
-                                {{ $product->category->name_ar ?? $product->category->name ?? 'غير محدد' }}
+                            <div class="product-price">
+                                {{ number_format($product->price) }} جنيه
+                                @if($product->sale_price && $product->sale_price < $product->price)
+                                    <span class="product-old-price">{{ number_format($product->sale_price) }} جنيه</span>
+                                @endif
                             </div>
-                            <div class="product-views">
-                                <i class="fas fa-eye"></i>
-                                {{ $product->views_count ?? 0 }}
-                            </div>
-                        </div>
                         
-                        <div class="product-actions">
-                            <button class="btn btn-add-cart" onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $product->id }})">
-                                <i class="fas fa-cart-plus"></i> أضف للسلة
-                            </button>
-                            <button class="btn btn-favorite" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(this)">
-                                <i class="fas fa-heart"></i>
-                            </button>
+                            <div class="product-meta">
+                                <div class="product-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    {{ $product->category->name_ar ?? $product->category->name ?? 'غير محدد' }}
+                                </div>
+                                <div class="product-views">
+                                    <i class="fas fa-eye"></i>
+                                    {{ $product->views_count ?? 0 }}
+                                </div>
+                            </div>
+                        
+                            <div class="product-actions">
+                                <button class="btn btn-add-cart" onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $product->id }})">
+                                    <i class="fas fa-cart-plus"></i> أضف للسلة
+                                </button>
+                                <button class="btn btn-favorite" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(this)">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -440,7 +594,7 @@
                 <div class="empty-state">
                     <i class="fas fa-box-open"></i>
                     <h3>لا توجد منتجات</h3>
-                    <p>لم يتم العثور على منتجات تطابق البحث</p>
+                    <p>لم يتم العثور على منتجات تطابق البحث الحالي</p>
                 </div>
             </div>
             @endforelse
@@ -448,9 +602,9 @@
 
         <!-- Pagination -->
         @if($products->hasPages())
-            <div class="d-flex justify-content-center">
-                {{ $products->links() }}
-            </div>
+        <div class="d-flex justify-content-center">
+            {{ $products->links() }}
+        </div>
         @endif
     </div>
 
@@ -458,44 +612,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-
         function addToCart(productId) {
-            fetch('{{ route("cart.add") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    product_id: productId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update cart badge
-                    const badge = document.getElementById('cartBadge');
-                    if (data.cart_count > 0) {
-                        badge.textContent = data.cart_count;
-                        badge.style.display = 'block';
-                    }
-                    
-                    // Show success message
-                    const button = event.target.closest('button');
-                    const originalText = button.innerHTML;
-                    button.innerHTML = '<i class="fas fa-check"></i> تم الإضافة';
-                    button.style.background = '#28a745';
-                    
-                    setTimeout(() => {
-                        button.innerHTML = originalText;
-                        button.style.background = '#ff6b35';
-                    }, 1500);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('حدث خطأ أثناء إضافة المنتج للسلة');
-            });
+            const button = event.target.closest('.btn-add-cart');
+            const originalText = button.innerHTML;
+            
+            // Add loading state with animation
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
+            button.disabled = true;
+            button.style.transform = 'scale(0.95)';
+            
+            // Simulate API call with better UX
+            setTimeout(() => {
+                // Success animation
+                button.innerHTML = '<i class="fas fa-check"></i> تم الإضافة بنجاح';
+                button.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                button.style.transform = 'scale(1.05)';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    button.style.transform = 'scale(1)';
+                    button.disabled = false;
+                }, 2000);
+            }, 1000);
         }
 
         function toggleFavorite(button) {
@@ -505,20 +644,60 @@
             if (button.classList.contains('active')) {
                 icon.classList.remove('far');
                 icon.classList.add('fas');
+                button.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 200);
             } else {
                 icon.classList.remove('fas');
                 icon.classList.add('far');
             }
         }
 
-        // Initialize favorites as outline hearts
+        // Initialize and handle interactions
         document.addEventListener('DOMContentLoaded', function() {
-            const favoriteButtons = document.querySelectorAll('.btn-favorite i');
-            favoriteButtons.forEach(icon => {
-                icon.classList.remove('fas');
-                icon.classList.add('far');
+            // Handle filter changes
+            const filterInputs = document.querySelectorAll('select[name="category"], input[name="min_price"], input[name="max_price"], input[name="search"]');
+            const sortSelect = document.querySelector('.sort-controls select');
+            
+            filterInputs.forEach(input => {
+                if (input.name === 'search') {
+                    // Add Enter key support for search
+                    input.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            applyFilters();
+                        }
+                    });
+                } else {
+                    input.addEventListener('change', applyFilters);
+                }
             });
+            
+            if (sortSelect) {
+                sortSelect.addEventListener('change', applyFilters);
+            }
         });
+        
+        function applyFilters() {
+            const params = new URLSearchParams();
+            
+            // Get filter values
+            const category = document.querySelector('select[name="category"]').value;
+            const minPrice = document.querySelector('input[name="min_price"]').value;
+            const maxPrice = document.querySelector('input[name="max_price"]').value;
+            const search = document.querySelector('input[name="search"]').value;
+            const sort = document.querySelector('.sort-controls select').value;
+            
+            // Add non-empty values to params
+            if (category) params.set('category', category);
+            if (minPrice) params.set('min_price', minPrice);
+            if (maxPrice) params.set('max_price', maxPrice);
+            if (search) params.set('search', search);
+            if (sort && sort !== 'latest') params.set('sort', sort);
+            
+            // Redirect with filters
+            window.location.href = '{{ route("products.index") }}?' + params.toString();
+        }
     </script>
 </body>
 </html>

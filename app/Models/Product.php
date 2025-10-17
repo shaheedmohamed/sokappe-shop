@@ -47,7 +47,9 @@ class Product extends Model
         'views_count',
         'sales_count',
         'user_id',
-        'category_id'
+        'vendor_id',
+        'category_id',
+        'images'
     ];
 
     protected $casts = [
@@ -56,6 +58,7 @@ class Product extends Model
         'cost_price' => 'decimal:2',
         'weight' => 'decimal:2',
         'dimensions' => 'array',
+        'images' => 'array',
         'seo_keywords' => 'array',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
@@ -211,5 +214,39 @@ class Product extends Model
     public function incrementViews()
     {
         $this->increment('views_count');
+    }
+
+    /**
+     * Get the first image URL or fallback
+     */
+    public function getFirstImageAttribute()
+    {
+        if ($this->featured_image) {
+            return $this->featured_image;
+        }
+        
+        if ($this->images && is_array($this->images) && count($this->images) > 0) {
+            return $this->images[0];
+        }
+        
+        return 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500';
+    }
+
+    /**
+     * Get all product images as array
+     */
+    public function getAllImagesAttribute()
+    {
+        $images = [];
+        
+        if ($this->featured_image) {
+            $images[] = $this->featured_image;
+        }
+        
+        if ($this->images && is_array($this->images)) {
+            $images = array_merge($images, $this->images);
+        }
+        
+        return array_unique($images);
     }
 }
