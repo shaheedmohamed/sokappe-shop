@@ -116,7 +116,10 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            Category::create($category);
+            Category::updateOrCreate(
+                ['slug' => $category['slug']],
+                $category
+            );
         }
 
         // Create some subcategories for Electronics
@@ -156,7 +159,10 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($subcategories as $subcategory) {
-            Category::create($subcategory);
+            Category::updateOrCreate(
+                ['slug' => $subcategory['slug']],
+                $subcategory
+            );
         }
     }
 }
