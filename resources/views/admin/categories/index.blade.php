@@ -1,9 +1,54 @@
 @extends('admin.layouts.app')
 
-@section('title', 'إدارة الفئات')
+@section('title', 'إدارة فئات المنتجات')
 @section('page-title', 'إدارة فئات المنتجات')
+@section('page-subtitle', 'إدارة الفئات والفئات الفرعية للمنتجات')
+@section('page-icon', '<i class="fas fa-tags"></i>')
 
 @section('content')
+<!-- Statistics Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-number text-primary">{{ $stats['total_categories'] }}</div>
+            <div class="stat-label">إجمالي الفئات</div>
+            <div class="stat-icon">
+                <i class="fas fa-tags"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-number text-success">{{ $stats['active_categories'] }}</div>
+            <div class="stat-label">فئات نشطة</div>
+            <div class="stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-number text-info">{{ $stats['total_subcategories'] }}</div>
+            <div class="stat-label">إجمالي الفئات الفرعية</div>
+            <div class="stat-icon">
+                <i class="fas fa-sitemap"></i>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card">
+            <div class="stat-number text-warning">{{ $stats['active_subcategories'] }}</div>
+            <div class="stat-label">فئات فرعية نشطة</div>
+            <div class="stat-icon">
+                <i class="fas fa-layer-group"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Add Category Button -->
 <div class="row g-4 mb-4">
     <div class="col-12">
@@ -30,6 +75,7 @@
                     <th>الاسم بالإنجليزية</th>
                     <th>الوصف</th>
                     <th>عدد المنتجات</th>
+                    <th>الفئات الفرعية</th>
                     <th>تاريخ الإنشاء</th>
                     <th>الحالة</th>
                     <th>الإجراءات</th>
@@ -54,6 +100,17 @@
                     <td>{{ Str::limit($category->description_ar ?? $category->description ?? 'لا يوجد وصف', 50) }}</td>
                     <td>
                         <span class="badge bg-primary">{{ $category->products_count }}</span>
+                    </td>
+                    <td>
+                        <span class="badge bg-info">{{ $category->subcategories_count }}</span>
+                        @if($category->subcategories_count > 0)
+                            <button class="btn btn-sm btn-outline-info ms-1" onclick="viewSubcategories({{ $category->id }})" title="عرض الفئات الفرعية">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        @endif
+                        <button class="btn btn-sm btn-outline-success" onclick="addSubcategory({{ $category->id }})" title="إضافة فئة فرعية">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </td>
                     <td>{{ $category->created_at->format('Y/m/d') }}</td>
                     <td>

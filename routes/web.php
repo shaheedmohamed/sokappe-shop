@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\StoreApprovalController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\VendorStoreStatusController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -88,7 +89,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::get('/products', [AdminController::class, 'products'])->name('products');
-    Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
+    Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories');
+    Route::post('/categories', [AdminCategoryController::class, 'store'])->name('categories.store');
+    Route::put('/categories/{category}', [AdminCategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
+    
+    // Subcategory routes
+    Route::get('/categories/{category}/subcategories', [AdminCategoryController::class, 'subcategories'])->name('categories.subcategories');
+    Route::post('/categories/{category}/subcategories', [AdminCategoryController::class, 'storeSubcategory'])->name('categories.subcategories.store');
+    Route::put('/subcategories/{subcategory}', [AdminCategoryController::class, 'updateSubcategory'])->name('subcategories.update');
+    Route::delete('/subcategories/{subcategory}', [AdminCategoryController::class, 'destroySubcategory'])->name('subcategories.destroy');
     Route::get('/vendors', [AdminController::class, 'vendors'])->name('vendors');
     Route::get('/vendors/rejected', [AdminController::class, 'rejectedVendors'])->name('vendors.rejected');
     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');

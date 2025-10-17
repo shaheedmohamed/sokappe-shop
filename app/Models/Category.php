@@ -36,6 +36,22 @@ class Category extends Model
     }
 
     /**
+     * Get the subcategories for the category.
+     */
+    public function subcategories(): HasMany
+    {
+        return $this->hasMany(Subcategory::class);
+    }
+
+    /**
+     * Get active subcategories for the category.
+     */
+    public function activeSubcategories(): HasMany
+    {
+        return $this->hasMany(Subcategory::class)->where('is_active', true)->orderBy('sort_order');
+    }
+
+    /**
      * Get the parent category.
      */
     public function parent()
