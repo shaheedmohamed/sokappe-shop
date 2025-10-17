@@ -5,6 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -49,6 +51,32 @@ Route::middleware('auth')->group(function () {
 // Vendor routes (public)
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendors.index');
 Route::get('/vendors/{vendor}', [VendorController::class, 'show'])->name('vendors.show');
+
+// Cart routes
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::get('/cart/count', [CartController::class, 'count'])->name('cart.count');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
+
+// Profile routes
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', function () {
+        return view('profile.index');
+    })->name('profile.index');
+});
+
+// Orders routes
+Route::middleware('auth')->group(function () {
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+});
+
+// Settings routes
+Route::middleware('auth')->group(function () {
+    Route::get('/settings', function () {
+        return view('settings.index');
+    })->name('settings.index');
+});
 
 // Additional routes for future implementation
 Route::get('/offers', function () {

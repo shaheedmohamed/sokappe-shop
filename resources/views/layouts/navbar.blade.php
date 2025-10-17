@@ -21,12 +21,6 @@
             <!-- Main Navigation Links -->
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
-                        <i class="fas fa-home me-1"></i>
-                        الرئيسية
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.index') }}">
                         <i class="fas fa-th-large me-1"></i>
                         الفئات
@@ -59,47 +53,32 @@
                 </li>
             </ul>
             
-            <!-- Search Bar -->
-            <form class="d-flex search-form me-3" action="{{ route('search') }}" method="GET">
-                <div class="search-container">
-                    <input class="form-control search-input" type="search" name="q" placeholder="ابحث عن المنتجات..." value="{{ request('q') }}" aria-label="Search">
-                    <button class="btn search-btn" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </form>
-            
             <!-- Right Side Navigation -->
             <ul class="navbar-nav">
                 <!-- Shopping Cart -->
                 <li class="nav-item">
-                    <a class="nav-link position-relative cart-link" href="#" onclick="toggleCart()">
+                    <a class="nav-link position-relative cart-link" href="{{ route('cart.index') }}" title="السلة">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-badge" id="cartBadge" style="display: none;">0</span>
-                        <span class="d-none d-lg-inline ms-1">السلة</span>
                     </a>
                 </li>
                 
                 <!-- Favorites -->
                 <li class="nav-item">
-                    <a class="nav-link position-relative" href="#" onclick="alert('قريباً!')">
+                    <a class="nav-link position-relative" href="{{ route('products.favorites') }}" title="المفضلة">
                         <i class="fas fa-heart"></i>
-                        <span class="d-none d-lg-inline ms-1">المفضلة</span>
                     </a>
                 </li>
                 
                 <!-- User Account -->
                 @auth
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="user-avatar me-2">
+                        <a class="nav-link dropdown-toggle user-dropdown-compact d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="user-avatar-small me-2">
                                 <i class="fas fa-user"></i>
                             </div>
-                            <div class="user-info d-none d-lg-block">
-                                <span class="user-name">{{ Auth::user()->name }}</span>
-                                <small class="user-status">متصل</small>
-                            </div>
-                            <i class="fas fa-chevron-down ms-2"></i>
+                            <span class="user-name-compact d-none d-lg-inline">{{ Auth::user()->name }}</span>
+                            <i class="fas fa-chevron-down ms-1"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu">
                             <li class="dropdown-header">
@@ -115,22 +94,29 @@
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('profile.index') }}">
                                     <i class="fas fa-user-circle me-2"></i>الملف الشخصي
                                 </a>
                             </li>
+                            @if(Auth::user()->store_name)
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('vendor.profile') }}">
+                                    <i class="fas fa-store me-2"></i>متجري
+                                </a>
+                            </li>
+                            @endif
+                            <li>
+                                <a class="dropdown-item" href="{{ route('orders.index') }}">
                                     <i class="fas fa-shopping-bag me-2"></i>طلباتي
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#" onclick="alert('قريباً!')">
+                                <a class="dropdown-item" href="{{ route('products.favorites') }}">
                                     <i class="fas fa-heart me-2"></i>المفضلة
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('settings.index') }}">
                                     <i class="fas fa-cog me-2"></i>الإعدادات
                                 </a>
                             </li>
@@ -149,13 +135,13 @@
                     <li class="nav-item">
                         <a class="nav-link login-btn" href="{{ route('login') }}">
                             <i class="fas fa-sign-in-alt me-1"></i>
-                            تسجيل الدخول
+                            <span class="d-none d-lg-inline">تسجيل الدخول</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link register-btn" href="{{ route('register') }}">
                             <i class="fas fa-user-plus me-1"></i>
-                            إنشاء حساب
+                            <span class="d-none d-lg-inline">إنشاء حساب</span>
                         </a>
                     </li>
                 @endauth
@@ -171,9 +157,15 @@
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         backdrop-filter: blur(10px);
-        padding: 0.8rem 0;
+        padding: 0.5rem 0; /* Reduced padding for more compact navbar */
         transition: all 0.3s ease;
         z-index: 1050;
+        width: 100%;
+    }
+
+    .navbar .container {
+        max-width: 100%;
+        padding: 0 1rem;
     }
 
     .navbar.scrolled {
@@ -211,14 +203,14 @@
     }
 
     .brand-name {
-        font-size: 1.5rem;
+        font-size: 1.125rem; /* 75% of 1.5rem */
         font-weight: 700;
         display: block;
         line-height: 1;
     }
 
     .brand-tagline {
-        font-size: 0.8rem;
+        font-size: 0.6rem; /* 75% of 0.8rem */
         opacity: 0.8;
         display: block;
         line-height: 1;
@@ -228,11 +220,14 @@
     .nav-link {
         color: rgba(255,255,255,0.9) !important;
         font-weight: 500;
-        padding: 0.7rem 1rem !important;
+        padding: 0.5rem 0.8rem !important;
         border-radius: 8px;
         transition: all 0.3s ease;
         position: relative;
-        margin: 0 0.2rem;
+        margin: 0 0.1rem;
+        height: 40px; /* Fixed height for consistency */
+        display: flex;
+        align-items: center;
     }
 
     .nav-link:hover {
@@ -259,57 +254,6 @@
         border-radius: 2px;
     }
 
-    /* Search Bar */
-    .search-form {
-        min-width: 300px;
-    }
-
-    .search-container {
-        position: relative;
-        width: 100%;
-    }
-
-    .search-input {
-        background: rgba(255,255,255,0.15);
-        border: 2px solid rgba(255,255,255,0.2);
-        color: white;
-        border-radius: 25px;
-        padding: 0.6rem 3rem 0.6rem 1.2rem;
-        transition: all 0.3s ease;
-    }
-
-    .search-input::placeholder {
-        color: rgba(255,255,255,0.7);
-    }
-
-    .search-input:focus {
-        background: rgba(255,255,255,0.25);
-        border-color: rgba(255,255,255,0.4);
-        box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.25);
-        color: white;
-    }
-
-    .search-btn {
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(255,255,255,0.2);
-        border: none;
-        color: white;
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-    }
-
-    .search-btn:hover {
-        background: rgba(255,255,255,0.3);
-        transform: translateY(-50%) scale(1.1);
-    }
 
     /* Cart Badge */
     .cart-badge {
@@ -336,26 +280,36 @@
     }
 
     /* User Dropdown */
-    .user-dropdown {
+    .user-dropdown-compact {
         background: rgba(255,255,255,0.1);
-        border-radius: 25px;
-        padding: 0.5rem 1rem !important;
+        border-radius: 20px;
+        padding: 0.4rem 0.8rem !important;
         transition: all 0.3s ease;
+        height: 40px; /* Fixed height to match other nav items */
     }
 
-    .user-dropdown:hover {
+    .user-dropdown-compact:hover {
         background: rgba(255,255,255,0.2);
     }
 
-    .user-avatar {
-        width: 35px;
-        height: 35px;
+    .user-avatar-small {
+        width: 28px;
+        height: 28px;
         background: rgba(255,255,255,0.2);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .user-name-compact {
+        font-size: 0.9rem;
+        font-weight: 500;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .user-avatar-large {
@@ -396,7 +350,14 @@
     }
 
     .user-dropdown-menu {
-        min-width: 280px;
+        background: white;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        padding: 0;
+        min-width: 300px;
+        margin-top: 15px;
+        overflow: hidden;
     }
 
     .dropdown-header {
@@ -413,25 +374,33 @@
     }
 
     .dropdown-item {
-        padding: 0.8rem 1.5rem;
-        font-size: 0.9rem;
+        padding: 1rem 1.5rem;
+        color: #333;
         transition: all 0.3s ease;
         border: none;
         background: none;
         width: 100%;
         text-align: right;
+        display: flex;
+        align-items: center;
+        font-weight: 500;
     }
 
     .dropdown-item:hover {
-        background: #f8f9fa;
-        padding-right: 2rem;
+        background: linear-gradient(90deg, #f8f9fa 0%, #e3f2fd 100%);
         color: #667eea;
+        transform: translateX(-5px);
     }
 
     .dropdown-item i {
         width: 20px;
         text-align: center;
-        color: #667eea;
+        opacity: 0.7;
+    }
+
+    .dropdown-item:hover i {
+        opacity: 1;
+        transform: scale(1.1);
     }
 
     /* Login/Register Buttons */
@@ -456,11 +425,6 @@
 
     /* Mobile Responsive */
     @media (max-width: 991px) {
-        .search-form {
-            min-width: 100%;
-            margin: 1rem 0;
-        }
-        
         .navbar-nav {
             text-align: center;
         }
@@ -491,7 +455,7 @@
 
     /* Body padding for fixed navbar - only for non-home pages */
     body.non-home-page {
-        padding-top: 80px;
+        padding-top: 65px; /* Reduced padding for compact navbar */
     }
 </style>
 
@@ -507,23 +471,32 @@
         }
     });
 
-    // Cart functionality placeholder
-    function toggleCart() {
-        // Add cart toggle functionality here
-        console.log('Cart toggled');
-    }
-
     // Update cart badge
     function updateCartBadge(count) {
         const badge = document.getElementById('cartBadge');
         if (count > 0) {
             badge.textContent = count;
-            badge.style.display = 'flex';
+            badge.style.display = 'block';
         } else {
             badge.style.display = 'none';
         }
     }
 
-    // Initialize cart badge (example)
-    // updateCartBadge(0);
+    // Initialize cart badge on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get cart count from server
+        fetch('/cart/count', {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            updateCartBadge(data.count || 0);
+        })
+        .catch(error => {
+            console.log('Cart count fetch failed:', error);
+        });
+    });
 </script>

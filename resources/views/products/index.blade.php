@@ -24,25 +24,6 @@
             direction: rtl;
         }
         
-        .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: white !important;
-        }
-        
-        .nav-link {
-            color: rgba(255,255,255,0.9) !important;
-            font-weight: 500;
-        }
-        
-        .nav-link:hover {
-            color: white !important;
-        }
         
         .page-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -79,12 +60,13 @@
         .product-card {
             background: white;
             border-radius: 15px;
-            overflow: hidden;
+            padding: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
-            border: 2px solid transparent;
-            margin-bottom: 20px;
+            height: 100%;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
         
         .product-card:hover {
@@ -124,7 +106,10 @@
         }
         
         .product-info {
-            padding: 20px;
+            padding: 15px 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         
         .product-title {
@@ -178,6 +163,8 @@
         .product-actions {
             display: flex;
             gap: 10px;
+            margin-top: auto;
+            padding-top: 15px;
         }
         
         .btn-add-cart {
@@ -264,14 +251,48 @@
         
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             color: #666;
         }
         
         .empty-state i {
-            font-size: 4rem;
+            font-size: 5rem;
             color: #ddd;
             margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 1200px) {
+            .product-card {
+                min-height: 450px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .product-card {
+                min-height: 400px;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .btn-add-cart, .btn-favorite {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .product-card {
+                min-height: 350px;
+                padding: 15px;
+            }
+            
+            .product-image {
+                height: 150px;
+            }
         }
         
         .pagination {
@@ -289,116 +310,6 @@
             border-color: #667eea;
         }
         
-        /* Cart Sidebar */
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            left: -400px;
-            width: 400px;
-            height: 100vh;
-            background: white;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            z-index: 1050;
-            transition: left 0.3s ease;
-            overflow-y: auto;
-        }
-        
-        .cart-sidebar.open {
-            left: 0;
-        }
-        
-        .cart-header {
-            padding: 20px;
-            border-bottom: 1px solid #e9ecef;
-            background: #f8f9fa;
-        }
-        
-        .cart-title {
-            font-weight: 600;
-            margin: 0;
-        }
-        
-        .cart-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #666;
-            cursor: pointer;
-        }
-        
-        .cart-body {
-            padding: 20px;
-        }
-        
-        .cart-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .cart-item-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            background: #f8f9fa;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #adb5bd;
-        }
-        
-        .cart-item-info {
-            flex: 1;
-        }
-        
-        .cart-item-title {
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-        
-        .cart-item-price {
-            color: #ff6b35;
-            font-weight: 600;
-        }
-        
-        .cart-item-remove {
-            background: none;
-            border: none;
-            color: #dc3545;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-        
-        .cart-footer {
-            padding: 20px;
-            border-top: 1px solid #e9ecef;
-            background: #f8f9fa;
-        }
-        
-        .cart-total {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        
-        .cart-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1040;
-            display: none;
-        }
-        
-        .cart-overlay.show {
-            display: block;
-        }
     </style>
 </head>
 <body class="non-home-page">
@@ -471,20 +382,29 @@
         </div>
 
         <!-- Products Grid -->
-        <div class="row">
+        <div class="row g-4">
             @forelse($products as $product)
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="product-card">
-                    @if($product->is_featured)
-                        <div class="product-badge">مميز</div>
-                    @endif
-                    
-                    <div class="product-image">
-                        <i class="fas fa-box"></i>
-                    </div>
-                    
-                    <div class="product-info">
-                        <h5 class="product-title">{{ $product->name_ar ?? $product->name }}</h5>
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 mb-4">
+                <a href="{{ route('product.show', $product) }}" class="text-decoration-none">
+                    <div class="product-card">
+                        @if($product->is_featured)
+                            <div class="product-badge">مميز</div>
+                        @endif
+                        
+                        <div class="product-image">
+                            @if($product->featured_image)
+                                <img src="{{ asset('storage/' . $product->featured_image) }}" alt="{{ $product->name }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
+                            @elseif($product->images && $product->images->first())
+                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->name }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
+                            @else
+                                <div class="placeholder-image d-flex align-items-center justify-content-center" style="width: 100%; height: 200px; background: #f8f9fa; border-radius: 8px;">
+                                    <i class="fas fa-image fa-3x text-muted"></i>
+                                </div>
+                            @endif
+                        </div>
+                        
+                        <div class="product-info">
+                            <h5 class="product-title">{{ $product->name_ar ?? $product->name }}</h5>
                         
                         <div class="product-price">
                             {{ number_format($product->price) }} جنيه
@@ -505,15 +425,15 @@
                         </div>
                         
                         <div class="product-actions">
-                            <button class="btn btn-add-cart" onclick="addToCart({{ $product->id }}, '{{ $product->name_ar ?? $product->name }}', {{ $product->price }})">
+                            <button class="btn btn-add-cart" onclick="event.preventDefault(); event.stopPropagation(); addToCart({{ $product->id }})">
                                 <i class="fas fa-cart-plus"></i> أضف للسلة
                             </button>
-                            <button class="btn btn-favorite" onclick="toggleFavorite(this)">
+                            <button class="btn btn-favorite" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorite(this)">
                                 <i class="fas fa-heart"></i>
                             </button>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             @empty
             <div class="col-12">
@@ -534,133 +454,48 @@
         @endif
     </div>
 
-    <!-- Cart Sidebar -->
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
-    <div class="cart-sidebar" id="cartSidebar">
-        <div class="cart-header d-flex justify-content-between align-items-center">
-            <h5 class="cart-title">سلة التسوق</h5>
-            <button class="cart-close" onclick="toggleCart()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <div class="cart-body" id="cartBody">
-            <div class="text-center text-muted py-4">
-                <i class="fas fa-shopping-cart fa-3x mb-3"></i>
-                <p>السلة فارغة</p>
-            </div>
-        </div>
-        
-        <div class="cart-footer" id="cartFooter" style="display: none;">
-            <div class="cart-total">
-                المجموع: <span id="cartTotal">0</span> جنيه
-            </div>
-            <button class="btn btn-primary w-100">
-                <i class="fas fa-credit-card"></i> إتمام الشراء
-            </button>
-        </div>
-    </div>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        let cart = [];
-        let cartTotal = 0;
 
-        function toggleCart() {
-            const sidebar = document.getElementById('cartSidebar');
-            const overlay = document.getElementById('cartOverlay');
-            
-            if (sidebar.classList.contains('open')) {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('show');
-            } else {
-                sidebar.classList.add('open');
-                overlay.classList.add('show');
-            }
-        }
-
-        function addToCart(productId, productName, productPrice) {
-            const product = { name: productName, price: productPrice };
-            
-            // Check if product already in cart
-            const existingItem = cart.find(item => item.id === productId);
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cart.push({
-                    id: productId,
-                    name: product.name,
-                    price: product.price,
-                    quantity: 1
-                });
-            }
-            
-            updateCartUI();
-            
-            // Show success message
-            const button = event.target;
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> تم الإضافة';
-            button.style.background = '#28a745';
-            
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.style.background = '#ff6b35';
-            }, 1500);
-        }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const cartBody = document.getElementById('cartBody');
-            const cartFooter = document.getElementById('cartFooter');
-            const cartBadge = document.getElementById('cartBadge');
-            const cartTotalElement = document.getElementById('cartTotal');
-            
-            // Update cart badge
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            if (totalItems > 0) {
-                cartBadge.textContent = totalItems;
-                cartBadge.style.display = 'flex';
-            } else {
-                cartBadge.style.display = 'none';
-            }
-            
-            // Update cart body
-            if (cart.length === 0) {
-                cartBody.innerHTML = `
-                    <div class="text-center text-muted py-4">
-                        <i class="fas fa-shopping-cart fa-3x mb-3"></i>
-                        <p>السلة فارغة</p>
-                    </div>
-                `;
-                cartFooter.style.display = 'none';
-            } else {
-                cartBody.innerHTML = cart.map(item => `
-                    <div class="cart-item">
-                        <div class="cart-item-image">
-                            <i class="fas fa-box"></i>
-                        </div>
-                        <div class="cart-item-info">
-                            <div class="cart-item-title">${item.name}</div>
-                            <div class="cart-item-price">${item.price.toLocaleString()} جنيه × ${item.quantity}</div>
-                        </div>
-                        <button class="cart-item-remove" onclick="removeFromCart(${item.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `).join('');
-                
-                // Calculate total
-                cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                cartTotalElement.textContent = cartTotal.toLocaleString();
-                cartFooter.style.display = 'block';
-            }
+        function addToCart(productId) {
+            fetch('{{ route("cart.add") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    product_id: productId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update cart badge
+                    const badge = document.getElementById('cartBadge');
+                    if (data.cart_count > 0) {
+                        badge.textContent = data.cart_count;
+                        badge.style.display = 'block';
+                    }
+                    
+                    // Show success message
+                    const button = event.target.closest('button');
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check"></i> تم الإضافة';
+                    button.style.background = '#28a745';
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.style.background = '#ff6b35';
+                    }, 1500);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء إضافة المنتج للسلة');
+            });
         }
 
         function toggleFavorite(button) {

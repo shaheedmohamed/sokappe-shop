@@ -24,16 +24,7 @@
             direction: rtl;
         }
         
-        .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
         
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: white !important;
-        }
         
         .store-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -176,23 +167,8 @@
         }
     </style>
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
-                <i class="fas fa-shopping-bag me-2"></i>
-                Sokappe Shop
-            </a>
-            
-            <div class="navbar-nav me-auto">
-                <a class="nav-link" href="{{ route('home') }}">الرئيسية</a>
-                <a class="nav-link" href="{{ route('categories.index') }}">الفئات</a>
-                <a class="nav-link" href="{{ route('products.index') }}">المنتجات</a>
-                <a class="nav-link" href="{{ route('vendors.index') }}">المتاجر</a>
-            </div>
-        </div>
-    </nav>
+<body class="non-home-page">
+    @include('layouts.navbar')
 
     <!-- Store Header -->
     <section class="store-header">

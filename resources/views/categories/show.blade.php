@@ -26,16 +26,6 @@
             direction: rtl;
         }
         
-        .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: white !important;
-        }
         
         .page-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -216,52 +206,8 @@
         }
     </style>
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
-                <i class="fas fa-shopping-bag me-2"></i>
-                Sokappe Shop
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">الرئيسية</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('categories.index') }}">الفئات</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('vendors.index') }}">المتاجر</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('offers.index') }}">العروض</a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('cart.index') }}">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="badge bg-danger">3</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">تسجيل الدخول</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}">إنشاء حساب</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<body class="non-home-page">
+    @include('layouts.navbar')
 
     <!-- Page Header -->
     <section class="page-header">

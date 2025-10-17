@@ -129,23 +129,8 @@
         }
     </style>
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
-                <i class="fas fa-shopping-bag me-2"></i>
-                Sokappe Shop
-            </a>
-            
-            <div class="navbar-nav me-auto">
-                <a class="nav-link" href="{{ route('home') }}">الرئيسية</a>
-                <a class="nav-link" href="{{ route('categories.index') }}">الفئات</a>
-                <a class="nav-link" href="{{ route('products.index') }}">المنتجات</a>
-                <a class="nav-link active" href="{{ route('vendors.index') }}">المتاجر</a>
-            </div>
-        </div>
-    </nav>
+<body class="non-home-page">
+    @include('layouts.navbar')
 
     <!-- Page Header -->
     <section class="page-header">

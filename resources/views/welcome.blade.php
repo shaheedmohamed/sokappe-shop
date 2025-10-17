@@ -27,24 +27,15 @@
             padding-top: 0 !important; /* Override navbar padding for this page */
         }
         
-        .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: white !important;
-        }
         
         .hero-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 100px 0;
-            margin-bottom: 50px;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
             position: relative;
             overflow: hidden;
+            padding: 35px 0;
         }
         
         .hero-animation {
@@ -1875,7 +1866,7 @@
         <div class="row g-4">
             @foreach($featuredProducts as $product)
             <div class="col-lg-3 col-md-6">
-                <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none">
+                <a href="{{ route('product.show', $product) }}" class="text-decoration-none">
                     <div class="product-card">
                         <div class="product-image">
                             @if($product->featured_image)
@@ -1883,7 +1874,9 @@
                             @elseif($product->images && $product->images->first())
                                 <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->name }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
                             @else
-                                <i class="{{ $product->category->icon ?? 'fas fa-box' }}"></i>
+                                <div class="placeholder-image d-flex align-items-center justify-content-center" style="width: 100%; height: 200px; background: #f8f9fa; border-radius: 8px;">
+                                    <i class="fas fa-image fa-3x text-muted"></i>
+                                </div>
                             @endif
                         </div>
                         <div class="product-info">
@@ -1918,7 +1911,7 @@
         <div class="row g-4">
             @foreach($latestProducts as $product)
             <div class="col-lg-3 col-md-6">
-                <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none">
+                <a href="{{ route('product.show', $product) }}" class="text-decoration-none">
                     <div class="product-card">
                         <div class="product-image">
                             @if($product->featured_image)
@@ -1926,7 +1919,9 @@
                             @elseif($product->images && $product->images->first())
                                 <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->name }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
                             @else
-                                <i class="{{ $product->category->icon ?? 'fas fa-box' }}"></i>
+                                <div class="placeholder-image d-flex align-items-center justify-content-center" style="width: 100%; height: 200px; background: #f8f9fa; border-radius: 8px;">
+                                    <i class="fas fa-image fa-3x text-muted"></i>
+                                </div>
                             @endif
                         </div>
                         <div class="product-info">

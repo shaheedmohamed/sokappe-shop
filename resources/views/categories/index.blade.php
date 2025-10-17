@@ -26,16 +26,6 @@
             direction: rtl;
         }
         
-        .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: white !important;
-        }
         
         .page-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -386,108 +376,8 @@
         }
     </style>
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
-                <i class="fas fa-shopping-bag me-2"></i>
-                Sokappe Shop
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">الرئيسية</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('categories.index') }}">الفئات</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products.index') }}">جميع الإعلانات</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products.create') }}">أضف إعلان</a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav">
-                    @auth
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle user-dropdown" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                                <div class="user-avatar">
-                                    <i class="fas fa-user"></i>
-                                </div>
-                                <span class="user-name">{{ Auth::user()->name }}</span>
-                                <i class="fas fa-chevron-down ms-1"></i>
-                            </a>
-                            <ul class="dropdown-menu user-dropdown-menu">
-                                <li class="dropdown-header">
-                                    <div class="user-info">
-                                        <div class="user-avatar-large">
-                                            <i class="fas fa-user"></i>
-                                        </div>
-                                        <div class="user-details">
-                                            <strong>{{ Auth::user()->name }}</strong>
-                                            <small class="text-muted">{{ Auth::user()->email }}</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                @if(Auth::user()->isVendor())
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('vendor.profile') }}">
-                                            <i class="fas fa-store me-2"></i>ملف المتجر
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('vendor.edit-profile') }}">
-                                            <i class="fas fa-edit me-2"></i>تعديل البيانات
-                                        </a>
-                                    </li>
-                                @endif
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('products.favorites') }}">
-                                        <i class="fas fa-heart me-2"></i>المفضلة
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-shopping-bag me-2"></i>طلباتي
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-cog me-2"></i>الإعدادات
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form method="POST" action="{{ route('logout') }}" class="d-inline w-100">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item text-danger">
-                                            <i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">تسجيل الدخول</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">إنشاء حساب</a>
-                        </li>
-                    @endauth
-                </ul>
-            </div>
-        </div>
-    </nav>
+<body class="non-home-page">
+    @include('layouts.navbar')
 
     <!-- Page Header -->
     <section class="page-header">
