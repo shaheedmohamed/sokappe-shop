@@ -6,6 +6,41 @@
 @section('page-icon', '<i class="fas fa-clipboard-check"></i>')
 
 @section('content')
+<style>
+.bulk-actions {
+    animation: slideInRight 0.3s ease-in-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.form-check-input:indeterminate {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e");
+}
+
+.table-card .table-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 10px 10px 0 0;
+    font-weight: 600;
+}
+
+.store-checkbox:checked + label {
+    font-weight: 600;
+    color: #0d6efd;
+}
+</style>
 <!-- Statistics Cards -->
 <div class="row g-4 mb-4">
     <div class="col-xl-3 col-md-6">
@@ -88,16 +123,33 @@
     <!-- Pending Stores -->
     <div class="tab-pane fade show active" id="pending" role="tabpanel">
         <div class="table-card">
-            <div class="table-header">
-                <i class="fas fa-clock me-2"></i>
-                طلبات المتاجر في الانتظار
+            <div class="table-header d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-clock me-2"></i>
+                    طلبات المتاجر في الانتظار
+                </div>
+                <div class="bulk-actions" style="display: none;">
+                    <button class="btn btn-success btn-sm me-2" onclick="bulkApprove()">
+                        <i class="fas fa-check me-1"></i>
+                        موافقة على المحدد (<span id="selected-count">0</span>)
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="bulkReject()">
+                        <i class="fas fa-times me-1"></i>
+                        رفض المحدد
+                    </button>
+                </div>
             </div>
             
             <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="select-all" onchange="toggleSelectAll()">
+                                    <label class="form-check-label" for="select-all">#</label>
+                                </div>
+                            </th>
                             <th>المتجر</th>
                             <th>صاحب المتجر</th>
                             <th>البريد الإلكتروني</th>
@@ -109,7 +161,12 @@
                     <tbody>
                         @forelse($pendingStores as $store)
                         <tr id="store-{{ $store->id }}">
-                            <td>{{ $loop->iteration }}</td>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input store-checkbox" type="checkbox" value="{{ $store->id }}" onchange="updateBulkActions()">
+                                    <label class="form-check-label">{{ $loop->iteration }}</label>
+                                </div>
+                            </td>
                             <td>
                                 <div class="d-flex align-items-center">
                                     <div class="me-3" style="width: 50px; height: 50px; background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
@@ -435,6 +492,125 @@ function approveRejectedStore(storeId, storeName) {
         .catch(error => {
             console.error('Error:', error);
             alert('حدث خطأ أثناء الموافقة على المتجر');
+        });
+    }
+}
+
+// Bulk Actions Functions
+function toggleSelectAll() {
+    const selectAllCheckbox = document.getElementById('select-all');
+    const storeCheckboxes = document.querySelectorAll('.store-checkbox');
+    
+    storeCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+    
+    updateBulkActions();
+}
+
+function updateBulkActions() {
+    const checkedBoxes = document.querySelectorAll('.store-checkbox:checked');
+    const bulkActions = document.querySelector('.bulk-actions');
+    const selectedCount = document.getElementById('selected-count');
+    
+    if (checkedBoxes.length > 0) {
+        bulkActions.style.display = 'block';
+        selectedCount.textContent = checkedBoxes.length;
+    } else {
+        bulkActions.style.display = 'none';
+    }
+    
+    // Update select all checkbox state
+    const allCheckboxes = document.querySelectorAll('.store-checkbox');
+    const selectAllCheckbox = document.getElementById('select-all');
+    
+    if (checkedBoxes.length === allCheckboxes.length && allCheckboxes.length > 0) {
+        selectAllCheckbox.checked = true;
+        selectAllCheckbox.indeterminate = false;
+    } else if (checkedBoxes.length > 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = true;
+    } else {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+    }
+}
+
+function bulkApprove() {
+    const checkedBoxes = document.querySelectorAll('.store-checkbox:checked');
+    const storeIds = Array.from(checkedBoxes).map(cb => cb.value);
+    
+    if (storeIds.length === 0) {
+        alert('يجب تحديد متجر واحد على الأقل');
+        return;
+    }
+    
+    if (confirm(`هل أنت متأكد من الموافقة على ${storeIds.length} متجر؟`)) {
+        fetch('/admin/store-approvals/bulk-approve', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                store_ids: storeIds
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`تم الموافقة على ${data.approved_count} متجر بنجاح`);
+                location.reload();
+            } else {
+                alert('حدث خطأ: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('حدث خطأ أثناء الموافقة الجماعية');
+        });
+    }
+}
+
+function bulkReject() {
+    const checkedBoxes = document.querySelectorAll('.store-checkbox:checked');
+    const storeIds = Array.from(checkedBoxes).map(cb => cb.value);
+    
+    if (storeIds.length === 0) {
+        alert('يجب تحديد متجر واحد على الأقل');
+        return;
+    }
+    
+    const reason = prompt(`اكتب سبب رفض ${storeIds.length} متجر:`);
+    if (!reason || reason.trim() === '') {
+        alert('يجب كتابة سبب الرفض');
+        return;
+    }
+    
+    if (confirm(`هل أنت متأكد من رفض ${storeIds.length} متجر؟`)) {
+        fetch('/admin/store-approvals/bulk-reject', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                store_ids: storeIds,
+                reason: reason.trim()
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(`تم رفض ${data.rejected_count} متجر بنجاح`);
+                location.reload();
+            } else {
+                alert('حدث خطأ: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('حدث خطأ أثناء الرفض الجماعي');
         });
     }
 }

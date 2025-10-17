@@ -29,6 +29,28 @@ class CategoryController extends Controller
     }
 
     /**
+     * Display subcategories management page
+     */
+    public function subcategoriesIndex()
+    {
+        $subcategories = Subcategory::with('category')
+            ->orderBy('category_id')
+            ->orderBy('sort_order')
+            ->paginate(20);
+
+        $categories = Category::orderBy('sort_order')->get();
+
+        $stats = [
+            'total_subcategories' => Subcategory::count(),
+            'active_subcategories' => Subcategory::where('is_active', true)->count(),
+            'total_categories' => Category::count(),
+            'categories_with_subcategories' => Category::has('subcategories')->count(),
+        ];
+
+        return view('admin.subcategories.index', compact('subcategories', 'categories', 'stats'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

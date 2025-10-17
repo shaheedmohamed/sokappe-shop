@@ -491,6 +491,19 @@
             </div>
             
             <div class="nav-item">
+                <a href="{{ route('admin.subcategories') }}" class="nav-link {{ request()->routeIs('admin.subcategories') ? 'active' : '' }}">
+                    <i class="fas fa-sitemap nav-icon"></i>
+                    إدارة الفئات الفرعية
+                    @php
+                        $subcategoriesCount = \App\Models\Subcategory::count();
+                    @endphp
+                    @if($subcategoriesCount > 0)
+                        <span class="badge bg-info ms-2">{{ $subcategoriesCount }}</span>
+                    @endif
+                </a>
+            </div>
+            
+            <div class="nav-item">
                 <a href="{{ route('admin.logs') }}" class="nav-link {{ request()->routeIs('admin.logs') ? 'active' : '' }}">
                     <i class="fas fa-history nav-icon"></i>
                     سجل الأنشطة

@@ -94,6 +94,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::put('/categories/{category}', [AdminCategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
     
+    // Subcategories management page
+    Route::get('/subcategories', [AdminCategoryController::class, 'subcategoriesIndex'])->name('subcategories');
+    
     // Subcategory routes
     Route::get('/categories/{category}/subcategories', [AdminCategoryController::class, 'subcategories'])->name('categories.subcategories');
     Route::post('/categories/{category}/subcategories', [AdminCategoryController::class, 'storeSubcategory'])->name('categories.subcategories.store');
@@ -110,6 +113,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/store-approvals/{user}', [StoreApprovalController::class, 'show'])->name('store-approvals.show');
     Route::post('/store-approvals/{user}/approve', [StoreApprovalController::class, 'approve'])->name('store-approvals.approve');
     Route::post('/store-approvals/{user}/reject', [StoreApprovalController::class, 'reject'])->name('store-approvals.reject');
+    
+    // Bulk actions
+    Route::post('/store-approvals/bulk-approve', [StoreApprovalController::class, 'bulkApprove'])->name('store-approvals.bulk-approve');
+    Route::post('/store-approvals/bulk-reject', [StoreApprovalController::class, 'bulkReject'])->name('store-approvals.bulk-reject');
 });
 
 // Additional routes for future implementation

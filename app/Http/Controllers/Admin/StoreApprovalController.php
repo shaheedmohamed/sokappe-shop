@@ -131,6 +131,87 @@ class StoreApprovalController extends Controller
     }
 
     /**
+     * Bulk approve stores
+     */
+    public function bulkApprove(Request $request)
+    {
+        $request->validate([
+            'store_ids' => 'required|array',
+            'store_ids.*' => 'exists:users,id'
+        ]);
+
+        $approvedCount = 0;
+        $errors = [];
+
+        foreach ($request->store_ids as $storeId) {
+            $user = User::find($storeId);
+            
+            if ($user && $user->store_name && $user->store_status === 'pending') {
+                $user->approveStore();
+                $approvedCount++;
+            } else {
+                $errors[] = "المتجر ID: {$storeId} غير قابل للموافقة";
+            }
+        }
+
+        if ($approvedCount > 0) {
+            return response()->json([
+                'success' => true,
+                'message' => "تم الموافقة على {$approvedCount} متجر بنجاح",
+                'approved_count' => $approvedCount,
+                'errors' => $errors
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'لم يتم الموافقة على أي متجر',
+                'errors' => $errors
+            ]);
+        }
+    }
+
+    /**
+     * Bulk reject stores
+     */
+    public function bulkReject(Request $request)
+    {
+        $request->validate([
+            'store_ids' => 'required|array',
+            'store_ids.*' => 'exists:users,id',
+            'reason' => 'required|string|max:1000'
+        ]);
+
+        $rejectedCount = 0;
+        $errors = [];
+
+        foreach ($request->store_ids as $storeId) {
+            $user = User::find($storeId);
+            
+            if ($user && $user->store_name && $user->store_status === 'pending') {
+                $user->rejectStore($request->reason);
+                $rejectedCount++;
+            } else {
+                $errors[] = "المتجر ID: {$storeId} غير قابل للرفض";
+            }
+        }
+
+        if ($rejectedCount > 0) {
+            return response()->json([
+                'success' => true,
+                'message' => "تم رفض {$rejectedCount} متجر بنجاح",
+                'rejected_count' => $rejectedCount,
+                'errors' => $errors
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'لم يتم رفض أي متجر',
+                'errors' => $errors
+            ]);
+        }
+    }
+
+    /**
      * Get stores by status for AJAX requests
      */
     public function getStores(Request $request)
