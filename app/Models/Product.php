@@ -225,8 +225,17 @@ class Product extends Model
             return $this->featured_image;
         }
         
-        if ($this->images && is_array($this->images) && count($this->images) > 0) {
-            return $this->images[0];
+        // Check relationship first
+        if ($this->relationLoaded('images') && $this->images->count() > 0) {
+            return asset('storage/' . $this->images->first()->image_path);
+        }
+        
+        // Check JSON field
+        if (isset($this->attributes['images']) && is_string($this->attributes['images'])) {
+            $jsonImages = json_decode($this->attributes['images'], true);
+            if (is_array($jsonImages) && count($jsonImages) > 0) {
+                return $jsonImages[0];
+            }
         }
         
         return 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=500';
@@ -243,8 +252,19 @@ class Product extends Model
             $images[] = $this->featured_image;
         }
         
-        if ($this->images && is_array($this->images)) {
-            $images = array_merge($images, $this->images);
+        // Get images from relationship
+        if ($this->relationLoaded('images')) {
+            foreach ($this->images as $image) {
+                $images[] = asset('storage/' . $image->image_path);
+            }
+        }
+        
+        // Get images from JSON field if exists
+        if (isset($this->attributes['images']) && is_string($this->attributes['images'])) {
+            $jsonImages = json_decode($this->attributes['images'], true);
+            if (is_array($jsonImages)) {
+                $images = array_merge($images, $jsonImages);
+            }
         }
         
         return array_unique($images);
