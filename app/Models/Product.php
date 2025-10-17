@@ -13,35 +13,55 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title_ar',
-        'title_en',
+        'name',
+        'name_ar',
         'slug',
+        'description',
         'description_ar',
-        'description_en',
+        'short_description',
+        'short_description_ar',
+        'sku',
         'price',
-        'original_price',
-        'currency',
-        'quantity',
-        'condition',
-        'status',
-        'category_id',
-        'user_id',
-        'location_governorate',
-        'location_city',
-        'contact_phone',
-        'contact_whatsapp',
-        'is_negotiable',
+        'sale_price',
+        'cost_price',
+        'stock_quantity',
+        'min_stock_level',
+        'weight',
+        'dimensions',
+        'featured_image',
+        'meta_title',
+        'meta_description',
+        'seo_keywords',
+        'brand',
+        'color',
+        'unit',
+        'size',
+        'subcategory_id',
+        'minimum_order_quantity',
+        'is_active',
         'is_featured',
+        'is_digital',
+        'requires_shipping',
+        'status',
+        'published_at',
         'views_count',
-        'featured_until'
+        'sales_count',
+        'user_id',
+        'category_id'
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
-        'original_price' => 'decimal:2',
-        'is_negotiable' => 'boolean',
+        'sale_price' => 'decimal:2',
+        'cost_price' => 'decimal:2',
+        'weight' => 'decimal:2',
+        'dimensions' => 'array',
+        'seo_keywords' => 'array',
+        'is_active' => 'boolean',
         'is_featured' => 'boolean',
-        'featured_until' => 'datetime',
+        'is_digital' => 'boolean',
+        'requires_shipping' => 'boolean',
+        'published_at' => 'datetime',
     ];
 
     /**
@@ -49,7 +69,23 @@ class Product extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the vendor that owns the product (alias for user).
+     */
+    public function vendor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the subcategory that owns the product.
+     */
+    public function subcategory(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'subcategory_id');
     }
 
     /**
@@ -125,7 +161,11 @@ class Product extends Model
 
         static::creating(function ($product) {
             if (empty($product->slug)) {
-                $product->slug = Str::slug($product->title_ar) . '-' . Str::random(6);
+                $slug_base = $product->name_ar ?: $product->name;
+                $product->slug = Str::slug($slug_base) . '-' . Str::random(6);
+            }
+            if (empty($product->sku)) {
+                $product->sku = 'SKU-' . strtoupper(Str::random(8));
             }
         });
     }
@@ -135,8 +175,8 @@ class Product extends Model
      */
     public function getDiscountPercentageAttribute()
     {
-        if ($this->original_price && $this->price < $this->original_price) {
-            return round((($this->original_price - $this->price) / $this->original_price) * 100);
+        if ($this->sale_price && $this->price > $this->sale_price) {
+            return round((($this->price - $this->sale_price) / $this->price) * 100);
         }
         return 0;
     }
@@ -146,7 +186,23 @@ class Product extends Model
      */
     public function getIsOnSaleAttribute()
     {
-        return $this->original_price && $this->price < $this->original_price;
+        return $this->sale_price && $this->sale_price < $this->price;
+    }
+
+    /**
+     * Scope a query to only include in stock products.
+     */
+    public function scopeInStock($query)
+    {
+        return $query->where('stock_quantity', '>', 0);
+    }
+
+    /**
+     * Get the effective selling price (sale price if available, otherwise regular price).
+     */
+    public function getEffectivePriceAttribute()
+    {
+        return $this->sale_price ?: $this->price;
     }
 
     /**

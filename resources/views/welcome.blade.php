@@ -24,6 +24,7 @@
         body {
             background-color: #f8f9fa;
             direction: rtl;
+            padding-top: 0 !important; /* Override navbar padding for this page */
         }
         
         .navbar {
@@ -1499,107 +1500,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-shopping-bag me-2"></i>
-                Sokappe
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">الرئيسية</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('categories.index') }}">الفئات</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products.index') }}">جميع الإعلانات</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products.create') }}">أضف إعلان</a>
-                    </li>
-                </ul>
-                
-                <ul class="navbar-nav">
-                    @auth
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle user-dropdown" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                                <div class="user-avatar">
-                                    <i class="fas fa-user"></i>
-                                </div>
-                                <span class="user-name">{{ Auth::user()->name }}</span>
-                                <i class="fas fa-chevron-down ms-1"></i>
-                            </a>
-                            <ul class="dropdown-menu user-dropdown-menu">
-                                <li class="dropdown-header">
-                                    <div class="user-info">
-                                        <div class="user-avatar-large">
-                                            <i class="fas fa-user"></i>
-                                        </div>
-                                        <div class="user-details">
-                                            <strong>{{ Auth::user()->name }}</strong>
-                                            <small class="text-muted">{{ Auth::user()->email }}</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                @if(Auth::user()->isVendor())
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('vendor.profile') }}">
-                                            <i class="fas fa-store me-2"></i>ملف المتجر
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('vendor.edit-profile') }}">
-                                            <i class="fas fa-edit me-2"></i>تعديل البيانات
-                                        </a>
-                                    </li>
-                                @endif
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('products.favorites') }}">
-                                        <i class="fas fa-heart me-2"></i>المفضلة
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-shopping-bag me-2"></i>طلباتي
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-cog me-2"></i>الإعدادات
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form method="POST" action="{{ route('logout') }}" class="d-inline w-100">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item text-danger">
-                                            <i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">تسجيل الدخول</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">إنشاء حساب</a>
-                        </li>
-                    @endauth
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @include('layouts.navbar')
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -1977,24 +1878,30 @@
                 <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none">
                     <div class="product-card">
                         <div class="product-image">
-                            @if($product->primaryImage)
-                                <img src="{{ $product->primaryImage->url }}" alt="{{ $product->title_ar }}" class="img-fluid">
+                            @if($product->featured_image)
+                                <img src="{{ asset('storage/' . $product->featured_image) }}" alt="{{ $product->name }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
+                            @elseif($product->images && $product->images->first())
+                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->name }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
                             @else
                                 <i class="{{ $product->category->icon ?? 'fas fa-box' }}"></i>
                             @endif
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">{{ $product->title_ar }}</h5>
+                            <h5 class="product-title">{{ $product->name_ar ?: $product->name }}</h5>
                             <div class="product-price">
-                                {{ number_format($product->price) }} {{ $product->currency }}
-                                @if($product->is_negotiable)
-                                    <small class="text-muted">قابل للتفاوض</small>
+                                @if($product->sale_price && $product->sale_price < $product->price)
+                                    <span class="text-danger">{{ number_format($product->sale_price, 2) }} جنيه</span>
+                                    <small class="text-muted text-decoration-line-through">{{ number_format($product->price, 2) }} جنيه</small>
+                                @else
+                                    {{ number_format($product->price, 2) }} جنيه
                                 @endif
                             </div>
-                            <small class="text-muted">
-                                <i class="fas fa-map-marker-alt"></i>
-                                {{ $product->location_governorate }}
-                            </small>
+                            @if($product->brand)
+                                <small class="text-muted">
+                                    <i class="fas fa-tag"></i>
+                                    {{ $product->brand }}
+                                </small>
+                            @endif
                         </div>
                     </div>
                 </a>
@@ -2007,30 +1914,36 @@
     <!-- Latest Products -->
     @if($latestProducts->count() > 0)
     <section class="container mb-5">
-        <h2 class="section-title">أحدث الإعلانات</h2>
+        <h2 class="section-title">أحدث المنتجات</h2>
         <div class="row g-4">
             @foreach($latestProducts as $product)
             <div class="col-lg-3 col-md-6">
                 <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none">
                     <div class="product-card">
                         <div class="product-image">
-                            @if($product->primaryImage)
-                                <img src="{{ $product->primaryImage->url }}" alt="{{ $product->title_ar }}" class="img-fluid">
+                            @if($product->featured_image)
+                                <img src="{{ asset('storage/' . $product->featured_image) }}" alt="{{ $product->name }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
+                            @elseif($product->images && $product->images->first())
+                                <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="{{ $product->name }}" class="img-fluid" style="width: 100%; height: 200px; object-fit: cover;">
                             @else
                                 <i class="{{ $product->category->icon ?? 'fas fa-box' }}"></i>
                             @endif
                         </div>
                         <div class="product-info">
-                            <h5 class="product-title">{{ $product->title_ar }}</h5>
+                            <h5 class="product-title">{{ $product->name_ar ?: $product->name }}</h5>
                             <div class="product-price">
-                                {{ number_format($product->price) }} {{ $product->currency }}
-                                @if($product->is_negotiable)
-                                    <small class="text-muted">قابل للتفاوض</small>
+                                @if($product->sale_price && $product->sale_price < $product->price)
+                                    <span class="text-danger">{{ number_format($product->sale_price, 2) }} جنيه</span>
+                                    <small class="text-muted text-decoration-line-through">{{ number_format($product->price, 2) }} جنيه</small>
+                                @else
+                                    {{ number_format($product->price, 2) }} جنيه
                                 @endif
                             </div>
                             <small class="text-muted">
-                                <i class="fas fa-map-marker-alt"></i>
-                                {{ $product->location_governorate }}
+                                @if($product->brand)
+                                    <i class="fas fa-tag"></i>
+                                    {{ $product->brand }}
+                                @endif
                                 <span class="float-end">
                                     <i class="fas fa-eye"></i>
                                     {{ $product->views_count }}
@@ -2046,7 +1959,7 @@
         <div class="text-center mt-4">
             <a href="{{ route('products.index') }}" class="btn btn-outline-primary">
                 <i class="fas fa-th me-2"></i>
-                شاهد جميع الإعلانات
+                شاهد جميع المنتجات
             </a>
         </div>
     </section>
@@ -2552,7 +2465,7 @@
             <hr class="my-4">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; 2024 Sokappe Shop. جميع الحقوق محفوظة.</p>
+                    <p class="mb-0">&copy; 2025 Sokappe Shop. جميع الحقوق محفوظة.</p>
                 </div>
                 <div class="col-md-6 text-end">
                     <a href="/privacy" class="me-3">سياسة الخصوصية</a>

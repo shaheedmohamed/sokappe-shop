@@ -96,25 +96,28 @@ class ProductController extends Controller
         $product->increment('views_count');
 
         // Load relationships
-        $product->load(['vendor', 'category', 'reviews.user']);
+        $product->load(['vendor', 'category', 'images']);
 
         // Get related products
-        $relatedProducts = Product::active()
-            ->inStock()
+        $relatedProducts = Product::where('is_active', true)
+            ->where('stock_quantity', '>', 0)
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
-            ->with(['vendor', 'category'])
+            ->with(['category'])
             ->limit(8)
             ->get();
 
-        // Get vendor's other products
-        $vendorProducts = Product::active()
-            ->inStock()
-            ->where('vendor_id', $product->vendor_id)
-            ->where('id', '!=', $product->id)
-            ->with(['vendor', 'category'])
-            ->limit(6)
-            ->get();
+        // Get vendor's other products (if vendor exists)
+        $vendorProducts = collect([]);
+        if ($product->vendor_id) {
+            $vendorProducts = Product::where('is_active', true)
+                ->where('stock_quantity', '>', 0)
+                ->where('vendor_id', $product->vendor_id)
+                ->where('id', '!=', $product->id)
+                ->with(['category'])
+                ->limit(6)
+                ->get();
+        }
 
         return view('products.show', compact(
             'product',
@@ -180,7 +183,124 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // This will be implemented later
-        return redirect()->back()->with('success', 'سيتم إضافة هذه الوظيفة قريباً');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
+            'stock_quantity' => 'required|integer|min:0',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'additional_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'sku' => 'nullable|string|unique:products,sku',
+            'sale_price' => 'nullable|numeric|min:0|lt:price',
+            'minimum_order_quantity' => 'nullable|integer|min:1',
+            'brand' => 'nullable|string|max:255',
+            'color' => 'nullable|string|max:255',
+            'unit' => 'nullable|string|max:255',
+            'size' => 'nullable|string|max:255',
+            'subcategory_id' => 'nullable|exists:categories,id',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
+            'seo_keywords' => 'nullable|string',
+        ], [
+            'name.required' => 'اسم المنتج مطلوب',
+            'name.max' => 'اسم المنتج يجب ألا يزيد عن 255 حرف',
+            'description.required' => 'وصف المنتج مطلوب',
+            'category_id.required' => 'يجب اختيار فئة المنتج',
+            'category_id.exists' => 'الفئة المختارة غير صحيحة',
+            'price.required' => 'سعر المنتج مطلوب',
+            'price.numeric' => 'سعر المنتج يجب أن يكون رقم',
+            'price.min' => 'سعر المنتج يجب أن يكون أكبر من أو يساوي صفر',
+            'stock_quantity.required' => 'كمية المخزن مطلوبة',
+            'minimum_order_quantity.integer' => 'الحد الأدنى لكمية الطلب يجب أن يكون رقم صحيح',
+            'minimum_order_quantity.min' => 'الحد الأدنى لكمية الطلب يجب أن يكون على الأقل 1',
+        ]);
+
+        try {
+            // Handle thumbnail upload
+            $thumbnailPath = null;
+            if ($request->hasFile('thumbnail')) {
+                $thumbnailPath = $request->file('thumbnail')->store('products/thumbnails', 'public');
+            }
+
+            // Parse SEO keywords
+            $seoKeywords = null;
+            if ($request->seo_keywords) {
+                $seoKeywords = json_decode($request->seo_keywords, true);
+            }
+
+            // Create the product
+            $product = Product::create([
+                'name' => $request->name,
+                'name_ar' => $request->name, // For now, using same name
+                'description' => $request->description,
+                'description_ar' => $request->description, // For now, using same description
+                'category_id' => $request->category_id,
+                'subcategory_id' => $request->subcategory_id,
+                'price' => $request->price,
+                'sale_price' => $request->sale_price,
+                'stock_quantity' => $request->stock_quantity,
+                'minimum_order_quantity' => $request->minimum_order_quantity ?? 1,
+                'sku' => $request->sku,
+                'brand' => $request->brand,
+                'color' => $request->color,
+                'unit' => $request->unit,
+                'size' => $request->size,
+                'featured_image' => $thumbnailPath,
+                'meta_title' => $request->meta_title,
+                'meta_description' => $request->meta_description,
+                'seo_keywords' => $seoKeywords,
+                'user_id' => auth()->id() ?? \App\Models\User::first()?->id ?? 1, // Use current user ID or first user or default to 1
+                'is_active' => true,
+                'status' => 'published',
+                'published_at' => now(),
+            ]);
+
+            // Handle additional images
+            if ($request->hasFile('additional_images')) {
+                $sortOrder = 1;
+                foreach ($request->file('additional_images') as $image) {
+                    if ($image && $image->isValid()) {
+                        $imagePath = $image->store('products/images', 'public');
+                        
+                        $product->images()->create([
+                            'image_path' => $imagePath,
+                            'sort_order' => $sortOrder,
+                            'is_primary' => false,
+                        ]);
+                        
+                        $sortOrder++;
+                    }
+                }
+            }
+
+            // Create primary image record for thumbnail
+            if ($thumbnailPath) {
+                $product->images()->create([
+                    'image_path' => $thumbnailPath,
+                    'sort_order' => 0,
+                    'is_primary' => true,
+                ]);
+            }
+
+            return redirect()->route('products.index')->with('success', 'تم إنشاء المنتج بنجاح!');
+
+        } catch (\Exception $e) {
+            \Log::error('Product creation failed: ' . $e->getMessage(), [
+                'user_id' => auth()->id(),
+                'request_data' => $request->except(['thumbnail', 'additional_images']),
+                'error' => $e->getTraceAsString()
+            ]);
+            
+            // Show detailed error in development
+            $errorMessage = 'حدث خطأ أثناء إنشاء المنتج: ' . $e->getMessage();
+            if (config('app.debug')) {
+                $errorMessage .= ' في السطر: ' . $e->getLine() . ' في الملف: ' . $e->getFile();
+            }
+            
+            return redirect()->back()
+                ->withInput()
+                ->with('error', $errorMessage);
+        }
     }
 }
