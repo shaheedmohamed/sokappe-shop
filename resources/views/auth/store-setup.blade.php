@@ -83,7 +83,7 @@
             font-size: 0.95rem;
         }
         
-        .form-control {
+        .form-control, select.form-control {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e1e5e9;
@@ -91,6 +91,10 @@
             font-size: 1rem;
             transition: all 0.3s ease;
             background: #f8f9fa;
+        }
+        
+        select.form-control {
+            cursor: pointer;
         }
         
         .form-control:focus {
@@ -147,6 +151,12 @@
         .alert-danger {
             background: #f8d7da;
             color: #721c24;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
         }
         
         .location-section {
@@ -261,14 +271,78 @@
                     @enderror
                 </div>
                 
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="governorate" class="form-label">
+                                <i class="fas fa-map"></i> المحافظة
+                            </label>
+                            <select id="governorate" 
+                                    name="governorate" 
+                                    class="form-control @error('governorate') is-invalid @enderror" 
+                                    required>
+                                <option value="">اختر المحافظة</option>
+                                <option value="القاهرة" {{ old('governorate') == 'القاهرة' ? 'selected' : '' }}>القاهرة</option>
+                                <option value="الجيزة" {{ old('governorate') == 'الجيزة' ? 'selected' : '' }}>الجيزة</option>
+                                <option value="الإسكندرية" {{ old('governorate') == 'الإسكندرية' ? 'selected' : '' }}>الإسكندرية</option>
+                                <option value="الدقهلية" {{ old('governorate') == 'الدقهلية' ? 'selected' : '' }}>الدقهلية</option>
+                                <option value="الشرقية" {{ old('governorate') == 'الشرقية' ? 'selected' : '' }}>الشرقية</option>
+                                <option value="القليوبية" {{ old('governorate') == 'القليوبية' ? 'selected' : '' }}>القليوبية</option>
+                                <option value="كفر الشيخ" {{ old('governorate') == 'كفر الشيخ' ? 'selected' : '' }}>كفر الشيخ</option>
+                                <option value="الغربية" {{ old('governorate') == 'الغربية' ? 'selected' : '' }}>الغربية</option>
+                                <option value="المنوفية" {{ old('governorate') == 'المنوفية' ? 'selected' : '' }}>المنوفية</option>
+                                <option value="البحيرة" {{ old('governorate') == 'البحيرة' ? 'selected' : '' }}>البحيرة</option>
+                                <option value="الإسماعيلية" {{ old('governorate') == 'الإسماعيلية' ? 'selected' : '' }}>الإسماعيلية</option>
+                                <option value="بورسعيد" {{ old('governorate') == 'بورسعيد' ? 'selected' : '' }}>بورسعيد</option>
+                                <option value="السويس" {{ old('governorate') == 'السويس' ? 'selected' : '' }}>السويس</option>
+                                <option value="المنيا" {{ old('governorate') == 'المنيا' ? 'selected' : '' }}>المنيا</option>
+                                <option value="بني سويف" {{ old('governorate') == 'بني سويف' ? 'selected' : '' }}>بني سويف</option>
+                                <option value="الفيوم" {{ old('governorate') == 'الفيوم' ? 'selected' : '' }}>الفيوم</option>
+                                <option value="أسيوط" {{ old('governorate') == 'أسيوط' ? 'selected' : '' }}>أسيوط</option>
+                                <option value="سوهاج" {{ old('governorate') == 'سوهاج' ? 'selected' : '' }}>سوهاج</option>
+                                <option value="قنا" {{ old('governorate') == 'قنا' ? 'selected' : '' }}>قنا</option>
+                                <option value="أسوان" {{ old('governorate') == 'أسوان' ? 'selected' : '' }}>أسوان</option>
+                                <option value="الأقصر" {{ old('governorate') == 'الأقصر' ? 'selected' : '' }}>الأقصر</option>
+                                <option value="البحر الأحمر" {{ old('governorate') == 'البحر الأحمر' ? 'selected' : '' }}>البحر الأحمر</option>
+                                <option value="الوادي الجديد" {{ old('governorate') == 'الوادي الجديد' ? 'selected' : '' }}>الوادي الجديد</option>
+                                <option value="مطروح" {{ old('governorate') == 'مطروح' ? 'selected' : '' }}>مطروح</option>
+                                <option value="شمال سيناء" {{ old('governorate') == 'شمال سيناء' ? 'selected' : '' }}>شمال سيناء</option>
+                                <option value="جنوب سيناء" {{ old('governorate') == 'جنوب سيناء' ? 'selected' : '' }}>جنوب سيناء</option>
+                                <option value="دمياط" {{ old('governorate') == 'دمياط' ? 'selected' : '' }}>دمياط</option>
+                            </select>
+                            @error('governorate')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="city" class="form-label">
+                                <i class="fas fa-city"></i> المدينة/المنطقة
+                            </label>
+                            <input type="text" 
+                                   id="city" 
+                                   name="city" 
+                                   class="form-control @error('city') is-invalid @enderror" 
+                                   value="{{ old('city') }}" 
+                                   placeholder="اسم المدينة أو المنطقة"
+                                   required>
+                            @error('city')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="form-group">
                     <label for="store_address" class="form-label">
-                        <i class="fas fa-map-marker-alt"></i> عنوان المتجر
+                        <i class="fas fa-map-marker-alt"></i> عنوان المتجر التفصيلي
                     </label>
                     <textarea id="store_address" 
                               name="store_address" 
                               class="form-control @error('store_address') is-invalid @enderror" 
-                              placeholder="العنوان التفصيلي للمتجر (الشارع، المنطقة، المدينة)"
+                              placeholder="العنوان التفصيلي للمتجر (الشارع، رقم المبنى، معالم مميزة)"
                               required>{{ old('store_address') }}</textarea>
                     @error('store_address')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -302,8 +376,13 @@
                     </div>
                 </div>
                 
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>ملاحظة:</strong> بعد إرسال الطلب، سيتم مراجعة بيانات متجرك خلال 48 ساعة وستصلك النتيجة عبر البريد الإلكتروني.
+                </div>
+                
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-check"></i> إنشاء المتجر وإنهاء التسجيل
+                    <i class="fas fa-store"></i> إرسال طلب تسجيل المتجر
                 </button>
             </form>
         </div>

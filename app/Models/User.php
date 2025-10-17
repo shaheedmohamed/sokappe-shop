@@ -39,6 +39,10 @@ class User extends Authenticatable
         'registration_completed',
         'store_created_at',
         'is_admin',
+        'store_status',
+        'rejection_reason',
+        'store_approved_at',
+        'store_submitted_at',
     ];
 
     /**
@@ -68,6 +72,8 @@ class User extends Authenticatable
             'store_latitude' => 'decimal:8',
             'store_longitude' => 'decimal:8',
             'is_admin' => 'boolean',
+            'store_approved_at' => 'datetime',
+            'store_submitted_at' => 'datetime',
         ];
     }
 
@@ -101,5 +107,53 @@ class User extends Authenticatable
     public function getStoreDisplayNameAttribute()
     {
         return $this->store_name ?: $this->name;
+    }
+
+    /**
+     * Check if store is pending approval
+     */
+    public function isStorePending()
+    {
+        return $this->store_status === 'pending';
+    }
+
+    /**
+     * Check if store is approved
+     */
+    public function isStoreApproved()
+    {
+        return $this->store_status === 'approved';
+    }
+
+    /**
+     * Check if store is rejected
+     */
+    public function isStoreRejected()
+    {
+        return $this->store_status === 'rejected';
+    }
+
+    /**
+     * Approve the store
+     */
+    public function approveStore()
+    {
+        $this->update([
+            'store_status' => 'approved',
+            'store_approved_at' => now(),
+            'rejection_reason' => null,
+        ]);
+    }
+
+    /**
+     * Reject the store
+     */
+    public function rejectStore($reason)
+    {
+        $this->update([
+            'store_status' => 'rejected',
+            'rejection_reason' => $reason,
+            'store_approved_at' => null,
+        ]);
     }
 }

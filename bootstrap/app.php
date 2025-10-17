@@ -13,12 +13,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'redirect.admin' => \App\Http\Middleware\RedirectIfAdmin::class,
-        ]);
-        
-        // Apply redirect middleware globally
-        $middleware->web(append: [
-            \App\Http\Middleware\RedirectIfAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

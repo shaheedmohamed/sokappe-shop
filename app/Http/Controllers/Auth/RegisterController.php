@@ -113,20 +113,26 @@ class RegisterController extends Controller
             'store_address' => ['required', 'string', 'max:500'],
             'store_latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'store_longitude' => ['nullable', 'numeric', 'between:-180,180'],
+            'governorate' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
         ]);
 
+        // Update user with store information
         $user = Auth::user();
         $user->update([
+            'user_type' => 'vendor',
             'store_name' => $request->store_name,
             'store_phone' => $request->store_phone,
             'store_description' => $request->store_description,
             'store_address' => $request->store_address,
-            'store_latitude' => $request->store_latitude,
-            'store_longitude' => $request->store_longitude,
+            'governorate' => $request->governorate,
+            'city' => $request->city,
             'registration_completed' => true,
             'store_created_at' => now(),
+            'store_status' => 'pending',
+            'store_submitted_at' => now(),
         ]);
 
-        return redirect()->route('vendor.profile')->with('success', 'تم إنشاء متجرك بنجاح! مرحباً بك في Sokappe.');
+        return redirect()->route('vendor.store-pending')->with('success', 'تم إرسال طلب تسجيل المتجر بنجاح! مرحباً بك في Sokappe.');
     }
 }

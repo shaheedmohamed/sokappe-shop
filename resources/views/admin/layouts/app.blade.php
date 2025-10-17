@@ -325,6 +325,19 @@
             </div>
             
             <div class="nav-item">
+                <a href="{{ route('admin.store-approvals') }}" class="nav-link {{ request()->routeIs('admin.store-approvals*') ? 'active' : '' }}">
+                    <i class="fas fa-clipboard-check nav-icon"></i>
+                    طلبات المتاجر
+                    @php
+                        $pendingCount = \App\Models\User::whereNotNull('store_name')->where('store_status', 'pending')->count();
+                    @endphp
+                    @if($pendingCount > 0)
+                        <span class="badge bg-warning ms-2">{{ $pendingCount }}</span>
+                    @endif
+                </a>
+            </div>
+            
+            <div class="nav-item">
                 <a href="{{ route('admin.products') }}" class="nav-link {{ request()->routeIs('admin.products') ? 'active' : '' }}">
                     <i class="fas fa-box nav-icon"></i>
                     المنتجات
@@ -374,28 +387,138 @@
     </div>
     
     <!-- Main Content -->
-    <div class="main-content">
-        <!-- Top Navbar -->
-        <div class="top-navbar">
-            <h1 class="page-title">@yield('page-title', 'لوحة التحكم')</h1>
+        
+        @stack('styles')
+    </head>
+    <body>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <a href="{{ route('admin.dashboard') }}" class="sidebar-logo">
+                    <i class="fas fa-crown"></i>
+                    Sokappe Admin
+                </a>
+            </div>
             
-            <div class="admin-info">
-                <span>مرحباً، {{ auth()->user()->name }}</span>
-                <div class="admin-avatar">
-                    {{ substr(auth()->user()->name, 0, 1) }}
+            <nav class="sidebar-nav">
+                <div class="nav-item">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <i class="fas fa-tachometer-alt nav-icon"></i>
+                        لوحة التحكم
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="{{ route('admin.users') }}" class="nav-link {{ request()->routeIs('admin.users') ? 'active' : '' }}">
+                        <i class="fas fa-users nav-icon"></i>
+                        المستخدمين
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="{{ route('admin.vendors') }}" class="nav-link {{ request()->routeIs('admin.vendors') ? 'active' : '' }}">
+                        <i class="fas fa-store nav-icon"></i>
+                        المتاجر
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="{{ route('admin.store-approvals') }}" class="nav-link {{ request()->routeIs('admin.store-approvals*') ? 'active' : '' }}">
+                        <i class="fas fa-clipboard-check nav-icon"></i>
+                        طلبات المتاجر
+                        @php
+                            $pendingCount = \App\Models\User::whereNotNull('store_name')->where('store_status', 'pending')->count();
+                        @endphp
+                        @if($pendingCount > 0)
+                            <span class="badge bg-warning ms-2">{{ $pendingCount }}</span>
+                        @endif
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="{{ route('admin.products') }}" class="nav-link {{ request()->routeIs('admin.products') ? 'active' : '' }}">
+                        <i class="fas fa-box nav-icon"></i>
+                        المنتجات
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="{{ route('admin.categories') }}" class="nav-link {{ request()->routeIs('admin.categories') ? 'active' : '' }}">
+                        <i class="fas fa-tags nav-icon"></i>
+                        الفئات
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="{{ route('admin.logs') }}" class="nav-link {{ request()->routeIs('admin.logs') ? 'active' : '' }}">
+                        <i class="fas fa-history nav-icon"></i>
+                        سجل الأنشطة
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="{{ route('admin.settings') }}" class="nav-link {{ request()->routeIs('admin.settings') ? 'active' : '' }}">
+                        <i class="fas fa-cog nav-icon"></i>
+                        الإعدادات
+                    </a>
+                </div>
+                
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 1rem;">
+                
+                <div class="nav-item">
+                    <a href="{{ route('home') }}" class="nav-link" target="_blank">
+                        <i class="fas fa-external-link-alt nav-icon"></i>
+                        عرض الموقع
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <form method="POST" action="{{ route('logout') }}" class="d-inline w-100">
+                        @csrf
+                        <button type="submit" class="nav-link w-100 text-start border-0 bg-transparent">
+                            <i class="fas fa-sign-out-alt nav-icon"></i>
+                            تسجيل الخروج
+                        </button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navbar -->
+            <div class="top-navbar">
+                <h1 class="page-title">@yield('page-title', 'لوحة التحكم')</h1>
+                
+                <div class="admin-header-right">
+                    <div class="me-3">
+                        <a href="{{ route('home') }}" class="btn btn-outline-light btn-sm" title="العودة للموقع">
+                            <i class="fas fa-external-link-alt me-1"></i>
+                            زيارة الموقع
+                        </a>
+                    </div>
+                    <div class="admin-user-info">
+                        <div class="admin-avatar">
+                            {{ substr(auth()->user()->name, 0, 1) }}
+                        </div>
+                        <div class="admin-user-details">
+                            <span class="admin-user-name">{{ auth()->user()->name }}</span>
+                            <small class="admin-user-role">مدير النظام</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content Area -->
+                <div class="content-area">
+                    @yield('content')
                 </div>
             </div>
         </div>
         
-        <!-- Content Area -->
-        <div class="content-area">
-            @yield('content')
-        </div>
-    </div>
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    @stack('scripts')
-</body>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        
+        @stack('scripts')
+    </body>
+    </html>
 </html>

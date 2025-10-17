@@ -75,6 +75,15 @@ class VendorController extends Controller
             return redirect()->route('home');
         }
 
+        // Check store approval status
+        if ($user->isStorePending() || $user->isStoreRejected()) {
+            return redirect()->route('vendor.store-pending');
+        }
+
+        if (!$user->isStoreApproved()) {
+            return redirect()->route('vendor.store-pending')->with('error', 'يجب الموافقة على متجرك أولاً');
+        }
+
         // Get vendor's products
         $products = Product::where('user_id', $user->id)
             ->with(['category', 'primaryImage'])
@@ -126,14 +135,28 @@ class VendorController extends Controller
             'store_address' => ['required', 'string', 'max:500'],
         ]);
 
-        $user->update([
+        $updateData = [
             'name' => $request->name,
             'phone' => $request->phone,
             'store_name' => $request->store_name,
             'store_phone' => $request->store_phone,
             'store_description' => $request->store_description,
             'store_address' => $request->store_address,
-        ]);
+        ];
+
+        // If store was rejected, reset to pending status
+        if ($user->isStoreRejected()) {
+            $updateData['store_status'] = 'pending';
+            $updateData['store_submitted_at'] = now();
+            $updateData['rejection_reason'] = null;
+        }
+
+        $user->update($updateData);
+
+        // Redirect based on store status
+        if ($user->isStoreRejected() || $user->isStorePending()) {
+            return redirect()->route('vendor.store-pending')->with('success', 'تم إرسال طلب تسجيل المتجر بنجاح!');
+        }
 
         return redirect()->route('vendor.profile')->with('success', 'تم تحديث بيانات المتجر بنجاح');
     }

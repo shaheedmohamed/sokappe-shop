@@ -15,13 +15,8 @@ class RedirectIfAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->is_admin) {
-            // If admin is trying to access regular pages, redirect to admin dashboard
-            if (!$request->is('admin*') && !$request->is('logout')) {
-                return redirect()->route('admin.dashboard');
-            }
-        }
-
+        // This middleware is now only used for login redirect
+        // No automatic redirects for regular page access
         return $next($request);
     }
 }

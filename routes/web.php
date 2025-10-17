@@ -8,6 +8,8 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\StoreApprovalController;
+use App\Http\Controllers\VendorStoreStatusController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -47,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/vendor/profile', [VendorController::class, 'profile'])->name('vendor.profile');
     Route::get('/vendor/profile/edit', [VendorController::class, 'editProfile'])->name('vendor.edit-profile');
     Route::put('/vendor/profile', [VendorController::class, 'updateProfile'])->name('vendor.update-profile');
+    Route::get('/vendor/store-pending', [VendorStoreStatusController::class, 'storePending'])->name('vendor.store-pending');
 });
 
 // Vendor routes (public)
@@ -89,6 +92,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/vendors', [AdminController::class, 'vendors'])->name('vendors');
     Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
     Route::get('/logs', [AdminController::class, 'logs'])->name('logs');
+    
+    // Store approval routes
+    Route::get('/store-approvals', [StoreApprovalController::class, 'index'])->name('store-approvals');
+    Route::get('/store-approvals/{user}', [StoreApprovalController::class, 'show'])->name('store-approvals.show');
+    Route::post('/store-approvals/{user}/approve', [StoreApprovalController::class, 'approve'])->name('store-approvals.approve');
+    Route::post('/store-approvals/{user}/reject', [StoreApprovalController::class, 'reject'])->name('store-approvals.reject');
 });
 
 // Additional routes for future implementation
