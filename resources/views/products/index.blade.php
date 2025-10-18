@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جميع المنتجات - Sokappe Shop</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -374,6 +375,10 @@
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
             color: white;
         }
+        .btn-add-cart:disabled {
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
         
         .btn-favorite {
             background: white;
@@ -652,26 +657,51 @@
         function addToCart(productId) {
             const button = event.target.closest('.btn-add-cart');
             const originalText = button.innerHTML;
+            const csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             
-            // Add loading state with animation
+            // Loading state
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإضافة...';
             button.disabled = true;
-            button.style.transform = 'scale(0.95)';
             
-            // Simulate API call with better UX
-            setTimeout(() => {
-                // Success animation
-                button.innerHTML = '<i class="fas fa-check"></i> تم الإضافة بنجاح';
+            fetch('{{ route('cart.add') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrf,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ product_id: productId, quantity: 1 })
+            })
+            .then(async (res) => {
+                let data = {};
+                try { data = await res.json(); } catch(_){}
+                if (!res.ok) throw new Error(data.message || 'حدث خطأ');
+                // Success UI
+                button.innerHTML = '<i class="fas fa-check"></i> تم الإضافة';
                 button.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
-                button.style.transform = 'scale(1.05)';
-                
+                // Update cart badge if available
+                if (typeof window.updateCartBadge === 'function') {
+                    window.updateCartBadge(data.count ?? ((window.currentCartCount||0)+1));
+                }
+                if (typeof window.bumpCartBadge === 'function') {
+                    window.bumpCartBadge();
+                }
                 setTimeout(() => {
                     button.innerHTML = originalText;
                     button.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    button.style.transform = 'scale(1)';
                     button.disabled = false;
-                }, 2000);
-            }, 1000);
+                }, 1200);
+            })
+            .catch(err => {
+                console.error(err);
+                button.innerHTML = '<i class="fas fa-exclamation-triangle"></i> فشل الإضافة';
+                button.style.background = 'linear-gradient(135deg, #e74c3c, #ff7675)';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    button.disabled = false;
+                }, 1500);
+            });
         }
 
         function toggleFavorite(button) {

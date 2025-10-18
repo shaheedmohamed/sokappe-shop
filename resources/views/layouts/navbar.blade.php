@@ -262,29 +262,26 @@
     }
 
 
-    /* Cart Badge */
+    /* Cart Badge: number only */
     .cart-badge {
         position: absolute;
-        top: -5px;
-        right: -5px;
-        background: #ff4757;
-        color: white;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        font-size: 0.7rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        animation: pulse 2s infinite;
+        top: -6px;
+        right: -2px;
+        background: transparent;
+        color: #ffffff;
+        border: none;
+        width: auto;
+        height: auto;
+        font-size: 0.9rem;
+        line-height: 1;
+        display: inline-block;
+        font-weight: 800;
+        padding: 0;
+        box-shadow: none;
+        transform: none !important;
+        animation: none !important;
     }
-
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-        100% { transform: scale(1); }
-    }
+    .cart-badge.bump { animation: none !important; }
 
     /* User Dropdown */
     .user-dropdown-compact {
@@ -481,12 +478,25 @@
     // Update cart badge
     function updateCartBadge(count) {
         const badge = document.getElementById('cartBadge');
-        if (count > 0) {
-            badge.textContent = count;
+        const safe = Number(count) || 0;
+        window.currentCartCount = safe;
+        if (safe > 0) {
+            badge.textContent = safe;
             badge.style.display = 'block';
         } else {
             badge.style.display = 'none';
         }
+    }
+
+    // Quick bump animation
+    function bumpCartBadge() {
+        const badge = document.getElementById('cartBadge');
+        if (!badge) return;
+        badge.classList.remove('bump');
+        // force reflow to restart animation
+        void badge.offsetWidth;
+        badge.classList.add('bump');
+        setTimeout(() => badge.classList.remove('bump'), 350);
     }
 
     // Initialize cart badge on page load
